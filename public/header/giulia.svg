@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Avatar Giulia">
+  <defs>
+    <linearGradient id="bgGiulia" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbc2eb" />
+      <stop offset="100%" stop-color="#a6c1ee" />
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="80" fill="url(#bgGiulia)" />
+  <circle cx="80" cy="62" r="30" fill="#f7e6d0" />
+  <path d="M30 142c10-30 31-45 50-45s40 15 50 45" fill="#4c2a4b" />
+  <text x="80" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#ffffff">G</text>
+</svg>

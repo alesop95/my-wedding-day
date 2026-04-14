@@ -1,0 +1,12 @@
+
+html,body {
+  height: auto;
+}
+
+.gradient-background {
+  background-image: repeating-linear-gradient(90deg, rgb(150, 208, 128,0.1), rgba(150, 208, 128,0.4));
+  background-repeat: repeat;
+  background-attachment:scroll;
+}
+
+
