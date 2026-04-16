@@ -9,6 +9,7 @@ import {
   useMediaQuery,
   useTheme
 } from "@mui/material";
+import { useContactsConfig } from "../hooks/useContactsConfig";
 
 type WhatsAppItemProps = {
   name: string;
@@ -19,8 +20,8 @@ type WhatsAppItemProps = {
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    color: "#44b700",
+    backgroundColor: theme.palette.success.main,
+    color: theme.palette.success.main,
     boxShadow: `0 0 0 1px ${theme.palette.background.paper}`,
     "&::after": {
       position: "absolute",
@@ -53,15 +54,51 @@ const WhatsAppItem: React.FC<WhatsAppItemProps> = ({
   message,
   image
 }) => {
+  const theme = useTheme();
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleOnClick();
+    }
+  };
+
   const handleOnClick = () => {
-    const numberClean = number.replace(/[^\w\s]/gi, "").replace(/ /g, "");
-    const url = `${URL}/${numberClean}?text=${encodeURI(message)}`;
-    window.open(url);
+    try {
+      const numberClean = number.replace(/[^\w\s]/gi, "").replace(/ /g, "");
+
+      if (!numberClean) {
+        console.error("Invalid phone number provided");
+        return;
+      }
+
+      const url = `${URL}/${numberClean}?text=${encodeURI(message)}`;
+      const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+
+      if (!newWindow) {
+        console.error("Failed to open WhatsApp. Popup may be blocked.");
+      }
+    } catch (error) {
+      console.error("Error opening WhatsApp:", error);
+    }
   };
   return (
     <Card
       onClick={handleOnClick}
-      sx={{ p: 0.5, backgroundColor: "rgba(252,252,252,0.8)", color: "black" }}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={`Contatta ${name} su WhatsApp`}
+      sx={{
+        p: 0.5,
+        backgroundColor: "background.paper",
+        color: "text.primary",
+        cursor: "pointer",
+        "&:focus": {
+          outline: `2px solid ${theme.palette.primary.main}`,
+          outlineOffset: "2px"
+        }
+      }}
     >
       <Stack direction={"row"} alignItems={"center"} spacing={1}>
         <StyledBadge
@@ -83,20 +120,19 @@ const WhatsAppItem: React.FC<WhatsAppItemProps> = ({
 export const WhatsAppWidget = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { contacts } = useContactsConfig();
+
   return (
     <Stack direction={isMobile ? "column" : "row"} spacing={1}>
-      <WhatsAppItem
-        name={"Beatrice"}
-        number={"+393331983242"}
-        message={""}
-        image={"./header/giulia.svg"}
-      />
-      <WhatsAppItem
-        name={"Alessio"}
-        number={"+393201950043"}
-        message={""}
-        image={"./header/mario.svg"}
-      />
+      {contacts.map((contact, index) => (
+        <WhatsAppItem
+          key={`${contact.name}-${index}`}
+          name={contact.name}
+          number={contact.number}
+          message={contact.message}
+          image={contact.image}
+        />
+      ))}
     </Stack>
   );
 };

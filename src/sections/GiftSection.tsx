@@ -17,11 +17,11 @@ import React, { useCallback, useRef } from "react";
 import { SectionHeader } from "../common/SectionHeader";
 import { SectionContainer } from "./SectionContainer";
 import {
-  bank,
   tripDescription1,
   tripDescription2
 } from "../utils/constants";
 import { useResponsiveDimensions } from "../hooks/useResponsiveDimensions";
+import { useBankConfig } from "../hooks/useBankConfig";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ConfettiExplosion from "react-confetti-explosion";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
@@ -71,7 +71,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ header, value }) => {
         >
           <Alert
             severity="info"
-            sx={{ width: "100%", backgroundColor: "#14c4e1", color: "white" }}
+            sx={{ width: "100%", backgroundColor: "info.main", color: "info.contrastText" }}
           >
             <Typography>Copiato negli appunti</Typography>
           </Alert>
@@ -86,6 +86,7 @@ export const GiftSection: React.FC = () => {
   const [showBankDetails, setShowBankDetails] = React.useState(false);
   const containerRef = React.useRef(null);
   const { aroundTheWorldAnimationWidth, containerWidth } = useResponsiveDimensions();
+  const { bankConfig } = useBankConfig();
 
   const [isExploding, setIsExploding] = React.useState(false);
   const lottieRef = useRef<LottieRefCurrentProps | null>(null);
@@ -148,11 +149,11 @@ export const GiftSection: React.FC = () => {
                 }
               }}
               sx={{
-                backgroundColor: "#87f395aa",
-                color: "#646262",
+                backgroundColor: "success.light",
+                color: "text.secondary",
                 ":hover": {
-                  bgcolor: "rgba(176,248,183,0.67)", // theme.palette.primary.main
-                  color: "#343434"
+                  bgcolor: "success.main",
+                  color: "text.primary"
                 }
               }}
               variant={"contained"}
@@ -179,9 +180,9 @@ export const GiftSection: React.FC = () => {
             >
               <Table size={"small"}>
                 <TableBody>
-                  <BankDetail header={"INTESTATARIO"} value={bank.owner} />
-                  <BankDetail header={"IBAN"} value={bank.iban} />
-                  <BankDetail header={"BIC/SEPA"} value={bank.bicSwift} />
+                  <BankDetail header={"INTESTATARIO"} value={bankConfig?.owner || ""} />
+                  <BankDetail header={"IBAN"} value={bankConfig?.iban || ""} />
+                  <BankDetail header={"BIC/SEPA"} value={bankConfig?.bicSwift || ""} />
                   {/* <BankDetail header={"NUMERO CONTO"} value={bank.number} /> */}
                 </TableBody>
               </Table>

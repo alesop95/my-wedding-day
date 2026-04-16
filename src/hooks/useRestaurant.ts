@@ -13,7 +13,23 @@ import { FamilyData } from "../types/family";
 import { RestaurantTable } from "../restaurant/type";
 import { getAuth, signInAnonymously } from "firebase/auth";
 
-export const isPrinting = false;
+export const usePrintMode = () => {
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  const togglePrintMode = useCallback(() => {
+    setIsPrinting(prev => !prev);
+  }, []);
+
+  const enablePrintMode = useCallback(() => {
+    setIsPrinting(true);
+  }, []);
+
+  const disablePrintMode = useCallback(() => {
+    setIsPrinting(false);
+  }, []);
+
+  return { isPrinting, togglePrintMode, enablePrintMode, disablePrintMode };
+};
 export const useRestaurant = (): boolean => {
   const [isRestaurant, setIsRestaurant] = useState<boolean>(false);
 
@@ -57,7 +73,9 @@ export const useLoadTables = () => {
           });
           setFamilies(familyData);
         })
-        .catch(() => {});
+        .catch((err) => {
+          console.error("Error loading restaurant family data:", err);
+        });
     });
   }, []);
   useEffect(() => {

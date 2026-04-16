@@ -17,13 +17,13 @@ import {
 import React, { useCallback, useContext, useMemo } from "react";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { reverse } from "fp-ts/Array";
-import { isPrinting } from "../hooks/useRestaurant";
 import { RestaurantContext } from "./index";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
 type Props = {
   tables: RestaurantTable[];
   families: FamilyData[];
+  isPrinting: boolean;
   onMemberAdded: (
     member: MemberWithFamilyRef,
     table: RestaurantTable,
@@ -34,6 +34,7 @@ type Props = {
 export const Tables: React.FC<Props> = ({
   tables,
   families,
+  isPrinting,
   onMemberAdded,
   onMemberRemoved
 }) => {
@@ -112,6 +113,7 @@ export const Tables: React.FC<Props> = ({
         {reverse(tables).map(table => (
           <Grid item xs={12} md={4} sm={6} key={table.id}>
             <Table
+              isPrinting={isPrinting}
               table={table}
               membersWithTable={membersWithTable}
               membersWithNoTable={membersWithNoTable}
@@ -165,6 +167,7 @@ export type MemberWithFamilyRef = FamilyMember & {
   familyId: string;
 };
 type TableProps = {
+  isPrinting: boolean;
   onMemberAdded: (
     member: MemberWithFamilyRef,
     table: RestaurantTable,
@@ -176,6 +179,7 @@ type TableProps = {
   membersWithNoTable: MemberWithFamilyRef[];
 };
 const Table: React.FC<TableProps> = ({
+  isPrinting,
   table,
   membersWithTable,
   membersWithNoTable,

@@ -2,9 +2,9 @@ import { Box, CircularProgress, Grid } from "@mui/material";
 import { CreateNewTable } from "./CreateNewTable";
 import { RestaurantTable } from "./type";
 import {
-  isPrinting,
   useLoadTables,
-  useUpdateTables
+  useUpdateTables,
+  usePrintMode
 } from "../hooks/useRestaurant";
 import { MemberWithFamilyRef, Tables } from "./Tables";
 import React, { createContext } from "react";
@@ -22,6 +22,7 @@ export const Restaurant = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const updateFamilyData = useUpdateFamilyDataEnhanced();
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>();
+  const { isPrinting, togglePrintMode } = usePrintMode();
   const familiesInvited = families?.filter(f => !f.onlyInfo) || [];
   const handleNewTable = async (newTable: RestaurantTable) => {
     if (tables?.some(t => t.id === newTable.id)) {
@@ -107,6 +108,7 @@ export const Restaurant = () => {
             <Tables
               tables={tables}
               families={familiesInvited}
+              isPrinting={isPrinting}
               onMemberAdded={handleOnMemberAdded}
               onMemberRemoved={handleOnMemberRemoved}
             />

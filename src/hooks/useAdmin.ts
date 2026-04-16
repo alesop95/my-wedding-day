@@ -16,7 +16,8 @@ export const useAdmin = (): boolean => {
     const q = query(collection(db, "admin"), where("password", "==", password));
     getDocs(q)
       .then(documentSnapshot => setAdmin(documentSnapshot.size > 0))
-      .catch(() => {
+      .catch((err) => {
+        console.error("Error checking admin authentication:", err);
         setAdmin(false);
       });
   }, []);
@@ -26,7 +27,13 @@ export const useAdmin = (): boolean => {
 
 export const useAdminData = () => {
   const [data, setData] = useState<FamilyData[]>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
   const loadData = useCallback(() => {
+    setLoading(true);
+    setError(null);
+
     const q = query(collection(db, "wedding"));
     getDocs(q)
       .then(documentSnapshot => {
@@ -37,10 +44,19 @@ export const useAdminData = () => {
         });
         setData(familyData);
       })
-      .catch(() => {});
+      .catch((err) => {
+        console.error("Error loading admin data:", err);
+        setError(err instanceof Error ? err : new Error("Failed to load family data"));
+        setData(undefined);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
   useEffect(() => {
     loadData();
   }, [loadData]);
-  return [data, loadData] as const;
+
+  return { data, loading, error, refetch: loadData } as const;
 };

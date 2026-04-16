@@ -1,12 +1,16 @@
 import {
+  Alert,
   Box,
+  Button,
+  CircularProgress,
   createTheme,
   Paper,
   responsiveFontSizes,
   Table,
   TableBody,
   TableContainer,
-  ThemeProvider
+  ThemeProvider,
+  Typography
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useAdminData } from "../hooks/useAdmin";
@@ -32,13 +36,44 @@ const theme = F.pipe(createTheme(themeOptions), responsiveFontSizes);
 
 export const Admin = () => {
   const [familyData, setFamilyData] = React.useState<FamilyData[] | null>(null);
-  const [data] = useAdminData();
+  const { data, loading, error, refetch } = useAdminData();
 
   useEffect(() => {
     if (data) {
       setFamilyData(data);
     }
   }, [data]);
+
+  if (loading) {
+    return (
+      <ThemeProvider theme={theme}>
+        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" minHeight="100vh" gap={2}>
+          <CircularProgress />
+          <Typography variant="h6">Caricamento dati...</Typography>
+        </Box>
+      </ThemeProvider>
+    );
+  }
+
+  if (error) {
+    return (
+      <ThemeProvider theme={theme}>
+        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" minHeight="100vh" gap={2} p={3}>
+          <Alert severity="error" sx={{ maxWidth: 600 }}>
+            <Typography variant="h6" gutterBottom>
+              Errore nel caricamento dei dati
+            </Typography>
+            <Typography variant="body2">
+              {error.message}
+            </Typography>
+          </Alert>
+          <Button variant="contained" onClick={refetch} color="primary">
+            Riprova
+          </Button>
+        </Box>
+      </ThemeProvider>
+    );
+  }
 
   if (!familyData) {
     return null;
