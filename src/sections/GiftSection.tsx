@@ -17,12 +17,11 @@ import React, { useCallback, useRef } from "react";
 import { SectionHeader } from "../common/SectionHeader";
 import { SectionContainer } from "./SectionContainer";
 import {
-  aroundTheWorldAnimationWidth,
   bank,
-  containerWidth,
   tripDescription1,
   tripDescription2
 } from "../utils/constants";
+import { useResponsiveDimensions } from "../hooks/useResponsiveDimensions";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ConfettiExplosion from "react-confetti-explosion";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
@@ -86,6 +85,7 @@ export const GiftSection: React.FC = () => {
   const [showFlag, setShowFlag] = React.useState(false);
   const [showBankDetails, setShowBankDetails] = React.useState(false);
   const containerRef = React.useRef(null);
+  const { aroundTheWorldAnimationWidth, containerWidth } = useResponsiveDimensions();
 
   const [isExploding, setIsExploding] = React.useState(false);
   const lottieRef = useRef<LottieRefCurrentProps | null>(null);

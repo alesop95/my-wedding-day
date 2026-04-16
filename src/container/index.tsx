@@ -1,6 +1,6 @@
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { containerWidth } from "../utils/constants";
 import React from "react";
+import { useResponsiveDimensions } from "../hooks/useResponsiveDimensions";
 import thunderbolt from "../animation/N1UsQhJ5jZ.json";
 import fire from "../animation/fire.json";
 import Lottie from "lottie-react";
@@ -12,6 +12,8 @@ const Container = ({ children }: { children: React.ReactNode }) => {
   const fireEasterEgg = useAtomValue(fireEasterEggAtom);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { containerWidth } = useResponsiveDimensions();
+
   return (
     <Box
       display={"flex"}

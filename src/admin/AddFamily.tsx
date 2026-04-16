@@ -13,6 +13,7 @@ import {
   Typography
 } from "@mui/material";
 import React, { useCallback } from "react";
+import { produce } from "immer";
 import { FamilyData, FamilyMember } from "../types/family";
 import { generateId } from "../utils/family";
 import { useAddFamilyData } from "../hooks/useFamilyData";
@@ -28,17 +29,15 @@ export const AddFamily: React.FC<AddFamilyProps> = ({
   onFamilyAdded,
   currentIds
 }) => {
-  const [members, setMembers] = React.useState<FamilyMember[]>([]);
   const [familyData, setFamilyData] = React.useState<FamilyData>({
     id: generateId(),
     family: "",
-    members,
+    members: [],
     linkSent: false,
     onlyInfo: false,
     note: ""
   });
   const reset = useCallback(() => {
-    setMembers([]);
     setFamilyData({
       id: generateId(),
       family: "",
@@ -77,16 +76,15 @@ export const AddFamily: React.FC<AddFamilyProps> = ({
           }
           label="solo info"
         />
-        {members.map((member, idx) => {
+        {familyData.members.map((member, idx) => {
+          const memberKey = `${member.firstName}_${member.lastName}_${member.sex}_${idx}`;
           return (
-            <Stack direction={"row"} spacing={1} key={`member_${idx}`}>
+            <Stack direction={"row"} spacing={1} key={memberKey}>
               <IconButton
                 onClick={() => {
-                  setMembers(mms => {
-                    const newMms = [...mms];
-                    newMms.splice(idx, 1);
-                    return newMms;
-                  });
+                  setFamilyData(produce(draft => {
+                    draft.members.splice(idx, 1);
+                  }));
                 }}
               >
                 <RemoveIcon />
@@ -95,11 +93,9 @@ export const AddFamily: React.FC<AddFamilyProps> = ({
                 label={"Nome"}
                 value={member.firstName}
                 onChange={({ target }) => {
-                  setMembers(mms => {
-                    const newMms = [...mms];
-                    newMms[idx].firstName = target.value;
-                    return newMms;
-                  });
+                  setFamilyData(produce(draft => {
+                    draft.members[idx].firstName = target.value;
+                  }));
                 }}
                 style={{ flex: 1 }}
               />
@@ -108,11 +104,9 @@ export const AddFamily: React.FC<AddFamilyProps> = ({
                 value={member.lastName}
                 style={{ flex: 1 }}
                 onChange={({ target }) => {
-                  setMembers(mms => {
-                    const newMms = [...mms];
-                    newMms[idx].lastName = target.value;
-                    return newMms;
-                  });
+                  setFamilyData(produce(draft => {
+                    draft.members[idx].lastName = target.value;
+                  }));
                 }}
               />
               <FormControl fullWidth style={{ flex: 1 }}>
@@ -122,11 +116,9 @@ export const AddFamily: React.FC<AddFamilyProps> = ({
                   id="demo-simple-select"
                   value={member.sex}
                   onChange={({ target }) => {
-                    setMembers(mms => {
-                      const newMms = [...mms];
-                      newMms[idx].sex = target.value as FamilyMember["sex"];
-                      return newMms;
-                    });
+                    setFamilyData(produce(draft => {
+                      draft.members[idx].sex = target.value as FamilyMember["sex"];
+                    }));
                   }}
                   label="Sex"
                 >
@@ -140,11 +132,9 @@ export const AddFamily: React.FC<AddFamilyProps> = ({
                     checked={member.isChild}
                     size={"small"}
                     onChange={({ target }) => {
-                      setMembers(mms => {
-                        const newMms = [...mms];
-                        newMms[idx].isChild = target.checked;
-                        return newMms;
-                      });
+                      setFamilyData(produce(draft => {
+                        draft.members[idx].isChild = target.checked;
+                      }));
                     }}
                   />
                 }
@@ -155,11 +145,9 @@ export const AddFamily: React.FC<AddFamilyProps> = ({
                   <Switch
                     checked={member.recipient}
                     onChange={({ target }) => {
-                      setMembers(mms => {
-                        const newMms = [...mms];
-                        newMms[idx].recipient = target.checked;
-                        return newMms;
-                      });
+                      setFamilyData(produce(draft => {
+                        draft.members[idx].recipient = target.checked;
+                      }));
                     }}
                     size={"small"}
                   />
@@ -174,29 +162,27 @@ export const AddFamily: React.FC<AddFamilyProps> = ({
           style={{ width: "fit-content" }}
           color={"info"}
           onClick={() => {
-            setMembers(mms => [
-              ...mms,
-              {
+            setFamilyData(produce(draft => {
+              draft.members.push({
                 firstName: "",
                 lastName: "",
                 isChild: false,
                 recipient: false,
                 sex: "male",
                 rsvp: "unknown"
-              }
-            ]);
+              });
+            }));
           }}
         >
           + aggiungi membro famiglia
         </Button>
         <Button
-          disabled={members.length === 0}
+          disabled={familyData.members.length === 0}
           variant={"contained"}
           style={{ width: "fit-content" }}
           onClick={async () => {
-            const newFamilyData = { ...familyData, members };
-            await save(newFamilyData);
-            onFamilyAdded(newFamilyData);
+            await save(familyData);
+            onFamilyAdded(familyData);
             reset();
           }}
         >

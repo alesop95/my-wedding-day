@@ -17,8 +17,8 @@ export const useNeedToRefresh = (minutes: number = 30): boolean => {
     if (lastRefresh && !isNaN(Number(lastRefresh))) {
       const lastRefreshDate = Number(lastRefresh);
       const diff = currentDate.getTime() - lastRefreshDate;
-      const diffHours = diff / (1000 * 60 * minutes);
-      setNeedToRefresh(diffHours > 24);
+      const diffInMinutes = diff / (1000 * 60);
+      setNeedToRefresh(diffInMinutes > minutes);
       localStorage.setItem("lastRefresh", currentDate.getTime().toString());
     } else {
       localStorage.setItem("lastRefresh", currentDate.getTime().toString());
@@ -27,7 +27,7 @@ export const useNeedToRefresh = (minutes: number = 30): boolean => {
   useEffect(() => {
     window.addEventListener("focus", checkIfNeedToRefresh);
     return () => {
-      window.removeEventListener("focus", () => {});
+      window.removeEventListener("focus", checkIfNeedToRefresh);
     };
   }, [checkIfNeedToRefresh]);
   return needToRefresh;

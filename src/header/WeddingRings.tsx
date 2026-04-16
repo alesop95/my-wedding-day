@@ -1,8 +1,9 @@
-import { animationRingConfig, weddingRingWidth } from "../utils/constants";
+import { animationRingConfig } from "../utils/constants";
 import { motion, useAnimationControls } from "framer-motion";
 import React, { useCallback, useEffect } from "react";
 import { easterEggAtom } from "../state/easterEggAtom";
 import { useAtomValue } from "jotai";
+import { useResponsiveDimensions } from "../hooks/useResponsiveDimensions";
 
 type Props = {
   onAnimationComplete: () => void;
@@ -10,6 +11,7 @@ type Props = {
 export const WeddingRings: React.FC<Props> = ({ onAnimationComplete }) => {
   const easterEgg = useAtomValue(easterEggAtom);
   const animation = useAnimationControls();
+  const { weddingRingWidth } = useResponsiveDimensions();
 
   const sequence = useCallback(async () => {
     await animation.start({
@@ -31,7 +33,7 @@ export const WeddingRings: React.FC<Props> = ({ onAnimationComplete }) => {
         repeat: Infinity
       }
     });
-  }, [animation]);
+  }, [animation, weddingRingWidth]);
 
   useEffect(() => {
     void sequence();

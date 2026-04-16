@@ -47,34 +47,34 @@ export const Report: React.FC<ReportProps> = ({ data }) => {
     (acc, family) => {
       return {
         ...acc,
-        mario:
-          acc.mario +
+        alessio:
+          acc.alessio +
           (family.side === "Alessio"
             ? family.members.filter(m => m.rsvp === "yes").length
             : 0),
-        not_mario:
-          acc.not_mario +
+        not_alessio:
+          acc.not_alessio +
           (family.side === "Alessio"
             ? family.members.filter(m => m.rsvp === "no").length
             : 0),
-        no_response_mario:
-          acc.no_response_mario +
+        no_response_alessio:
+          acc.no_response_alessio +
           (family.side === "Alessio"
             ? family.members.filter(m => !["no", "yes"].includes(m.rsvp)).length
             : 0),
-        giulia:
-          acc.giulia +
+        beatrice:
+          acc.beatrice +
           (family.side === "Beatrice"
             ? family.members.filter(m => m.rsvp === "yes").length
             : 0),
-        not_giulia:
-          acc.not_giulia +
+        not_beatrice:
+          acc.not_beatrice +
           (family.side === "Beatrice"
             ? family.members.filter(m => m.rsvp === "no").length
             : 0),
 
-        no_response_giulia:
-          acc.no_response_giulia +
+        no_response_beatrice:
+          acc.no_response_beatrice +
           (family.side === "Beatrice"
             ? family.members.filter(m => !["no", "yes"].includes(m.rsvp)).length
             : 0)
@@ -256,7 +256,7 @@ export const Report: React.FC<ReportProps> = ({ data }) => {
               >
                 Alessio{" "}
                 {data
-                  .filter(f => f.side === "alessio")
+                  .filter(f => f.side === "Alessio")
                   .reduce((acc, family) => acc + (family.donation ?? 0), 0)}
                 €
               </Typography>
@@ -267,7 +267,7 @@ export const Report: React.FC<ReportProps> = ({ data }) => {
               >
                 Beatrice{" "}
                 {data
-                  .filter(f => f.side === "beatrice")
+                  .filter(f => f.side === "Beatrice")
                   .reduce((acc, family) => acc + (family.donation ?? 0), 0)}
                 €
               </Typography>

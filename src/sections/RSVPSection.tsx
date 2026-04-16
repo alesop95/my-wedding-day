@@ -13,9 +13,9 @@ import {
 } from "@mui/material";
 import {
   confirmDaysBefore,
-  containerWidth,
   weddingDate
 } from "../utils/constants";
+import { useResponsiveDimensions } from "../hooks/useResponsiveDimensions";
 import { FamilyData, FamilyMember } from "../types/family";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -47,6 +47,7 @@ const ConfirmMember: React.FC<ConfirmMemberProps> = ({
   hideName = false
 }) => {
   const [isExploding, setIsExploding] = React.useState(false);
+  const { containerWidth } = useResponsiveDimensions();
   const noRSVP = member.rsvp === "unknown";
   const handleRSVP = (rsvp: "yes" | "no") => {
     if (isUpdating || isExploding) {

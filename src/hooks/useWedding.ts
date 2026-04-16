@@ -15,9 +15,12 @@ export const useWedding = () => {
     setIsWeddingOver(now >= tomorrow);
   }, []);
 
-  setInterval(computeTime, 1000 * 60 * 15);
   useEffect(() => {
     computeTime();
+    const interval = setInterval(computeTime, 1000 * 60 * 15);
+    return () => {
+      clearInterval(interval);
+    };
   }, [computeTime]);
   return { isWeddingStarted, isPartyStarted, isWeddingOver };
 };

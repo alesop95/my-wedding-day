@@ -1,10 +1,4 @@
-export const containerWidth = Math.min(window.innerWidth, 700);
-export const containerHalfWidth = containerWidth / 2;
-export const headerCharacterWidth = containerHalfWidth * 0.5;
-export const weddingRingWidth = headerCharacterWidth * 0.5;
-export const sectionHeaderIconWidth = Math.min(headerCharacterWidth * 0.3, 48);
-export const errorAnimationWidth = containerWidth * 0.6;
-export const aroundTheWorldAnimationWidth = containerWidth * 0.3;
+// Responsive dimensions moved to useResponsiveDimensions hook
 export const easterEggActivationClicks = 5;
 export const weddingDate = new Date(2027, 6, 24);
 export const confirmDaysBefore = 45;

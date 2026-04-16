@@ -2,9 +2,12 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import Lottie from "lottie-react";
 import errorAnimation from "../animation/error.json";
-import { errorAnimationWidth } from "../utils/constants";
 import { WhatsAppWidget } from "./WhatsAppWidget";
+import { useResponsiveDimensions } from "../hooks/useResponsiveDimensions";
+
 export const ErrorMask = () => {
+  const { errorAnimationWidth } = useResponsiveDimensions();
+
   return (
     <Box
       display={"flex"}

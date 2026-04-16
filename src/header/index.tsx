@@ -9,10 +9,8 @@ import {
   easterEggClickCounterAtom,
   fireEasterEggAtom
 } from "../state/easterEggAtom";
-import {
-  easterEggActivationClicks,
-  headerCharacterWidth
-} from "../utils/constants";
+import { easterEggActivationClicks } from "../utils/constants";
+import { useResponsiveDimensions } from "../hooks/useResponsiveDimensions";
 
 type Props = {
   onAnimationComplete: () => void;
@@ -25,6 +23,7 @@ const Header: React.FC<Props> = ({ onAnimationComplete }) => {
   const animation = useAnimationControls();
   const animationShake = useAnimationControls();
   const audio = useMemo(() => new Audio("back_to_the_future.mp3"), []);
+  const { headerCharacterWidth } = useResponsiveDimensions();
 
   useEffect(() => {
     if (
@@ -81,7 +80,7 @@ const Header: React.FC<Props> = ({ onAnimationComplete }) => {
       }
     });
     setEasterEgg(false);
-  }, [animation, setEasterEgg, setEasterEggFire]);
+  }, [animation, setEasterEgg, setEasterEggFire, headerCharacterWidth]);
   React.useEffect(() => {
     if (easterEgg) {
       audio.currentTime = 0;

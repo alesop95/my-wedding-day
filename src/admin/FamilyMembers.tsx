@@ -6,7 +6,6 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 type FamilyRowsProps = {
   data: FamilyData;
-  key: string;
 };
 
 const rsvpMap: Record<FamilyMember["rsvp"], string> = {

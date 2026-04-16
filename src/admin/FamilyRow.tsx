@@ -33,7 +33,6 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 type FamilyRowProps = {
   familyData: FamilyData;
-  key: string;
 };
 
 export const FamilyRow: React.FC<FamilyRowProps> = ({ familyData }) => {
@@ -66,8 +65,8 @@ export const FamilyRow: React.FC<FamilyRowProps> = ({ familyData }) => {
           <RSVPStats data={localData} />
           {localData.note && <WarningAmberIcon color={"warning"} />}
 
-          <Typography variant={"body2"}>
-            <b style={{ color: "#0082e1" }}>{localData.family}</b>
+          <Typography variant={"body2"} color="primary" fontWeight="bold">
+            {localData.family}
           </Typography>
           {!canUseClipboard && (
             <Link target={"_blank"} href={familyLink} variant={"body2"}>
