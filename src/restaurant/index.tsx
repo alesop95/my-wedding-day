@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Grid } from "@mui/material";
+import { Box, Button, CircularProgress, Grid } from "@mui/material";
 import { CreateNewTable } from "./CreateNewTable";
 import { RestaurantTable } from "./type";
 import {
@@ -91,6 +91,40 @@ export const Restaurant = () => {
     <RestaurantContext.Provider value={{ isLoading }}>
       <Grid container xs={12} p={2} columnSpacing={2} rowSpacing={2}>
         <Grid item xs={12}>
+          {!isPrinting && (
+            <Box display="flex" gap={2} mb={2}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => {
+                  const currentUrl = new URL(window.location.href);
+                  currentUrl.pathname = '/admin';
+                  currentUrl.searchParams.set('switchTo', 'admin');
+                  window.location.href = currentUrl.toString();
+                }}
+              >
+                Vai ad Admin
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={togglePrintMode}
+              >
+                Modalità Stampa
+              </Button>
+            </Box>
+          )}
+          {isPrinting && (
+            <Box display="flex" gap={2} mb={2}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={togglePrintMode}
+              >
+                Esci da Stampa
+              </Button>
+            </Box>
+          )}
           {(!tables || !families) && (
             <Box
               sx={{

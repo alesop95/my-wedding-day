@@ -2,7 +2,6 @@ import { RestaurantTable } from "./type";
 import { FamilyData, FamilyMember } from "../types/family";
 import {
   Autocomplete,
-  Box,
   Button,
   Card,
   Chip,
@@ -237,7 +236,7 @@ const Table: React.FC<TableProps> = ({
           </fieldset>
         )}
         {isPrinting &&
-          Object.entries(members).map(([familyId, members]) =>
+          Object.entries(members).map(([_, members]) =>
             members.map(member => (
               <Stack
                 direction={"row"}
@@ -273,7 +272,7 @@ const Table: React.FC<TableProps> = ({
             ))
           )}
         {!isPrinting &&
-          Object.entries(members).map(([familyId, members]) => (
+          Object.entries(members).map(([_, members]) => (
             <fieldset>
               <legend>{members[0].family}</legend>
               {members.map(member => (
@@ -326,7 +325,7 @@ const Table: React.FC<TableProps> = ({
             renderInput={params => (
               <TextField {...params} label="aggiungi invitato" />
             )}
-            onChange={(e, value) => {
+            onChange={(_, value) => {
               if (!value) {
                 setSelectedMember(undefined);
                 return;

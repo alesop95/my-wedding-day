@@ -163,9 +163,10 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
   const [isUpdating, setIsUpdating] = React.useState(false);
   const [note, setNotes] = React.useState("");
   const [isNoteOpen, setIsNoteOpen] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
   limitDate.setDate(limitDate.getDate() - confirmDaysBefore);
   const update = useUpdateFamilyData(familyData.id);
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
   return (
     <SectionContainer>
       <Stack direction={"column"} alignItems={"center"} spacing={1}>
@@ -202,18 +203,42 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
               key={`confirm_${idx}`}
               onMemberUpdate={async member => {
                 setIsUpdating(true);
-                const members = produce(updatedFamilyData.members, draft => {
-                  draft[idx] = member;
-                  return draft;
-                });
-                const toUpdate = { ...updatedFamilyData, members };
-                await update(toUpdate);
-                setIsUpdating(false);
-                setUpdatedFamilyData(toUpdate);
+                setError(null);
+                try {
+                  const members = produce(updatedFamilyData.members, draft => {
+                    draft[idx] = member;
+                    return draft;
+                  });
+                  const toUpdate = { ...updatedFamilyData, members };
+                  await update(toUpdate);
+                  setUpdatedFamilyData(toUpdate);
+                } catch (err) {
+                  console.error("Errore aggiornamento RSVP:", err);
+                  setError("Errore di rete. Riprova tra qualche minuto.");
+                } finally {
+                  setIsUpdating(false);
+                }
               }}
             />
           ))}
           <YouHaveToConfirm members={updatedFamilyData.members} />
+          {error && (
+            <Alert
+              severity="error"
+              sx={{ width: "100%", mt: 2 }}
+              action={
+                <Button
+                  color="inherit"
+                  size="small"
+                  onClick={() => setError(null)}
+                >
+                  OK
+                </Button>
+              }
+            >
+              {error}
+            </Alert>
+          )}
         </Stack>
         <Box
           display={"flex"}
@@ -259,14 +284,21 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
               color={"inherit"}
               disabled={isUpdating || !isNoteOpen}
               onClick={async () => {
-                const updateData = { ...updatedFamilyData, note };
-                setUpdatedFamilyData(updateData);
-                setNotes("");
                 setIsUpdating(true);
-                await update(updateData);
-                setOpenSnackbar(true);
-                setIsUpdating(false);
-                setIsNoteOpen(false);
+                setError(null);
+                try {
+                  const updateData = { ...updatedFamilyData, note };
+                  await update(updateData);
+                  setUpdatedFamilyData(updateData);
+                  setNotes("");
+                  setOpenSnackbar(true);
+                  setIsNoteOpen(false);
+                } catch (err) {
+                  console.error("Errore salvataggio note:", err);
+                  setError("Errore di rete. Riprova tra qualche minuto.");
+                } finally {
+                  setIsUpdating(false);
+                }
               }}
             >
               salva note

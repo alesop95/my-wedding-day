@@ -8,11 +8,14 @@ export const useWedding = () => {
   const computeTime = useCallback(() => {
     const now = new Date();
     const weddingStart = new Date(2027, 6, 24);
-    const tomorrow = new Date(2027, 6, 25);
     const partyStart = new Date(2027, 6, 24, 19, 30);
+    // Grace period: matrimonio considerato "finito" 30 minuti dopo mezzanotte
+    // per evitare race condition e perdita stati non persistiti
+    const weddingEndWithGracePeriod = new Date(2027, 6, 25, 0, 30);
+
     setIsWeddingStarted(now > weddingStart);
     setIsPartyStarted(now > partyStart);
-    setIsWeddingOver(now >= tomorrow);
+    setIsWeddingOver(now >= weddingEndWithGracePeriod);
   }, []);
 
   useEffect(() => {

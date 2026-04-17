@@ -2,7 +2,6 @@ import {
   Alert,
   Box,
   Button,
-  Grid,
   IconButton,
   Slide,
   Snackbar,
@@ -82,7 +81,6 @@ const BankDetail: React.FC<BankDetailProps> = ({ header, value }) => {
 };
 
 export const GiftSection: React.FC = () => {
-  const [showFlag, setShowFlag] = React.useState(false);
   const [showBankDetails, setShowBankDetails] = React.useState(false);
   const containerRef = React.useRef(null);
   const { aroundTheWorldAnimationWidth, containerWidth } = useResponsiveDimensions();
@@ -96,7 +94,6 @@ export const GiftSection: React.FC = () => {
       return;
     }
     setIsExploding(true);
-    setShowFlag(true);
     setTimeout(() => {
       lottieRef.current?.play();
       setIsExploding(false);

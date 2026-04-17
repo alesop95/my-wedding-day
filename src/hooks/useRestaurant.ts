@@ -14,18 +14,43 @@ import { RestaurantTable } from "../restaurant/type";
 import { getAuth, signInAnonymously } from "firebase/auth";
 
 export const usePrintMode = () => {
-  const [isPrinting, setIsPrinting] = useState(false);
+  const [isPrinting, setIsPrinting] = useState(() => {
+    try {
+      const stored = localStorage.getItem('restaurant-print-mode');
+      return stored ? JSON.parse(stored) : false;
+    } catch {
+      return false;
+    }
+  });
 
   const togglePrintMode = useCallback(() => {
-    setIsPrinting(prev => !prev);
+    setIsPrinting((prev: boolean) => {
+      const newValue = !prev;
+      try {
+        localStorage.setItem('restaurant-print-mode', JSON.stringify(newValue));
+      } catch (err) {
+        console.warn('Impossibile salvare print mode in localStorage:', err);
+      }
+      return newValue;
+    });
   }, []);
 
   const enablePrintMode = useCallback(() => {
     setIsPrinting(true);
+    try {
+      localStorage.setItem('restaurant-print-mode', JSON.stringify(true));
+    } catch (err) {
+      console.warn('Impossibile salvare print mode in localStorage:', err);
+    }
   }, []);
 
   const disablePrintMode = useCallback(() => {
     setIsPrinting(false);
+    try {
+      localStorage.setItem('restaurant-print-mode', JSON.stringify(false));
+    } catch (err) {
+      console.warn('Impossibile salvare print mode in localStorage:', err);
+    }
   }, []);
 
   return { isPrinting, togglePrintMode, enablePrintMode, disablePrintMode };

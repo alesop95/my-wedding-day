@@ -90,7 +90,21 @@ export const Admin = () => {
           marginTop: 10
         }}
       >
-        <Report data={familyData} />
+        <Box display="flex" gap={2} mb={2} alignItems="center">
+          <Report data={familyData} />
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => {
+              const currentUrl = new URL(window.location.href);
+              currentUrl.pathname = '/restaurant';
+              currentUrl.searchParams.set('switchTo', 'restaurant');
+              window.location.href = currentUrl.toString();
+            }}
+          >
+            Vai ai Tavoli
+          </Button>
+        </Box>
         <AddFamily
           currentIds={new Set(familyData.map(p => p.id))}
           onFamilyAdded={newFamily => {

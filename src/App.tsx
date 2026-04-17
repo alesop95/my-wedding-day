@@ -69,11 +69,28 @@ const App = () => {
   const admin = useAdmin();
   const restaurant = useRestaurant();
 
-  if (admin) {
+  // Gestione transizione diretta Admin ↔ Restaurant
+  const [adminMode, setAdminMode] = React.useState<'admin' | 'restaurant' | null>(null);
+
+  React.useEffect(() => {
+    const url = new URL(window.location.href);
+    const switchMode = url.searchParams.get('switchTo');
+    if (switchMode === 'restaurant' && admin) {
+      setAdminMode('restaurant');
+    } else if (switchMode === 'admin' && restaurant) {
+      setAdminMode('admin');
+    } else if (admin) {
+      setAdminMode('admin');
+    } else if (restaurant) {
+      setAdminMode('restaurant');
+    }
+  }, [admin, restaurant]);
+
+  if (adminMode === 'admin' || (admin && !adminMode)) {
     return <Admin />;
   }
 
-  if (restaurant) {
+  if (adminMode === 'restaurant' || (restaurant && !adminMode)) {
     return <Restaurant />;
   }
 
