@@ -25,17 +25,19 @@ import { useRestaurant } from "./hooks/useRestaurant";
 import { Restaurant } from "./restaurant";
 import { AtHome } from "./sections/AtHome";
 import { WeddingIsOver } from "./sections/WeddingIsOver";
+import { GuestbookSection } from "./sections/GuestbookSection";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+
 const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
+  apiKey: "AIzaSyAjVNYUCvAPUbSyf6gjnDObiJQT9arEYFw",
+  authDomain: "my-wedding-day-dev.firebaseapp.com",
+  projectId: "my-wedding-day-dev",
+  storageBucket: "my-wedding-day-dev.firebasestorage.app",
+  messagingSenderId: "638204567637",
+  appId: "1:638204567637:web:d750670c56ac9030da74dc"
 };
 
 // Initialize Firebase
@@ -131,6 +133,7 @@ const App = () => {
             </>
           )}
           <GiftSection />
+          {!isWeddingOver && <GuestbookSection />}
           {!isPartyStarted && <GallerySection />}
         </motion.div>
       )}

@@ -20,6 +20,7 @@ import { FamilyRow } from "./FamilyRow";
 import { AddFamily } from "./AddFamily";
 import { FamilyData } from "../types/family";
 import { Report } from "./Report";
+import { GuestbookModeration } from "./GuestbookModeration";
 
 export const themeOptions: ThemeOptions = {
   palette: {
@@ -111,6 +112,8 @@ export const Admin = () => {
             setFamilyData([newFamily, ...familyData]);
           }}
         />
+
+        <GuestbookModeration />
 
         <Box display={"flex"} style={{ width: "90%" }}>
           <TableContainer component={Paper} sx={{ m: 2 }}>
