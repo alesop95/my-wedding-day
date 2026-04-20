@@ -8,7 +8,8 @@ import {
   serverTimestamp,
   Timestamp
 } from "firebase/firestore";
-import { db } from "../App";
+import { getAuth, signInAnonymously } from "firebase/auth";
+import { db, firebaseApp } from "../App";
 import { GuestbookEntry } from "../types/guestbook";
 import { Either, left, right } from "fp-ts/Either";
 import { TaskEither } from "fp-ts/TaskEither";
@@ -23,44 +24,57 @@ export const useGuestbook = () => {
   const familyId = familyResult?.kind === "success" ? familyResult.data.id : null;
 
   useEffect(() => {
-    const q = query(
-      collection(db, "guestbook"),
-      orderBy("createdAt", "desc")
-    );
+    let unsubscribe: (() => void) | null = null;
 
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        try {
-          const guestbookEntries: GuestbookEntry[] = [];
-          snapshot.docs.forEach((doc) => {
-            const data = doc.data();
-            const entry: GuestbookEntry = {
-              id: doc.id,
-              familyId: data.familyId,
-              authorName: data.authorName,
-              message: data.message,
-              createdAt: (data.createdAt as Timestamp).toDate(),
-            };
-            guestbookEntries.push(entry);
-          });
-          setMessages(guestbookEntries);
-          setError(null);
-        } catch (err) {
-          console.error("Error processing guestbook data:", err);
-          setError(err instanceof Error ? err : new Error("Errore caricamento messaggi"));
-        } finally {
+    // Sign-in anonimo prima di iniziare le query Firestore
+    signInAnonymously(getAuth(firebaseApp)).then(() => {
+      const q = query(
+        collection(db, "guestbook"),
+        orderBy("createdAt", "desc")
+      );
+
+      unsubscribe = onSnapshot(
+        q,
+        (snapshot) => {
+          try {
+            const guestbookEntries: GuestbookEntry[] = [];
+            snapshot.docs.forEach((doc) => {
+              const data = doc.data();
+              const entry: GuestbookEntry = {
+                id: doc.id,
+                familyId: data.familyId,
+                authorName: data.authorName,
+                message: data.message,
+                createdAt: data.createdAt ? (data.createdAt as Timestamp).toDate() : new Date(),
+              };
+              guestbookEntries.push(entry);
+            });
+            setMessages(guestbookEntries);
+            setError(null);
+          } catch (err) {
+            console.error("Error processing guestbook data:", err);
+            setError(err instanceof Error ? err : new Error("Errore caricamento messaggi"));
+          } finally {
+            setLoading(false);
+          }
+        },
+        (err) => {
+          console.error("Error listening to guestbook:", err);
+          setError(err instanceof Error ? err : new Error("Errore connessione real-time"));
           setLoading(false);
         }
-      },
-      (err) => {
-        console.error("Error listening to guestbook:", err);
-        setError(err instanceof Error ? err : new Error("Errore connessione real-time"));
-        setLoading(false);
-      }
-    );
+      );
+    }).catch((err) => {
+      console.error("Error signing in anonymously:", err);
+      setError(err instanceof Error ? err : new Error("Errore autenticazione"));
+      setLoading(false);
+    });
 
-    return () => unsubscribe();
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, []);
 
   const sendMessage = useCallback(
@@ -82,6 +96,10 @@ export const useGuestbook = () => {
           if (message.length > 500) {
             return left(new Error("Il messaggio non può superare i 500 caratteri"));
           }
+
+          // Assicura autenticazione anonima prima di inviare
+          const auth = getAuth(firebaseApp);
+          await signInAnonymously(auth);
 
           await addDoc(collection(db, "guestbook"), {
             familyId,
