@@ -11,25 +11,28 @@ import {
   Typography,
   Divider,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "../common/SectionHeader";
 import { SectionContainer } from "./SectionContainer";
 import { useGuestbook } from "../hooks/useGuestbook";
 import { motion, AnimatePresence } from "framer-motion";
-// Funzione per formattare tempo relativo senza date-fns
-const formatTimeAgo = (date: Date): string => {
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / (1000 * 60));
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+// Funzione per formattare tempo relativo con i18n
+const createFormatTimeAgo = (t: (key: string, options?: any) => string) => {
+  return (date: Date): string => {
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-  if (diffMins < 1) return "ora";
-  if (diffMins === 1) return "1 minuto fa";
-  if (diffMins < 60) return `${diffMins} minuti fa`;
-  if (diffHours === 1) return "1 ora fa";
-  if (diffHours < 24) return `${diffHours} ore fa`;
-  if (diffDays === 1) return "1 giorno fa";
-  return `${diffDays} giorni fa`;
+    if (diffMins < 1) return t("timeAgo.now");
+    if (diffMins === 1) return t("timeAgo.minuteAgo");
+    if (diffMins < 60) return t("timeAgo.minutesAgo", { count: diffMins });
+    if (diffHours === 1) return t("timeAgo.hourAgo");
+    if (diffHours < 24) return t("timeAgo.hoursAgo", { count: diffHours });
+    if (diffDays === 1) return t("timeAgo.dayAgo");
+    return t("timeAgo.daysAgo", { count: diffDays });
+  };
 };
 
 const MAX_MESSAGE_LENGTH = 500;
@@ -40,6 +43,8 @@ const MessageCard: React.FC<{
   createdAt: Date;
   index: number;
 }> = ({ authorName, message, createdAt, index }) => {
+  const { t } = useTranslation();
+  const formatTimeAgo = createFormatTimeAgo(t);
   const timeAgo = formatTimeAgo(createdAt);
 
   return (
@@ -100,6 +105,7 @@ const MessageCard: React.FC<{
 };
 
 export const GuestbookSection: React.FC = () => {
+  const { t } = useTranslation();
   const { messages, loading, error, sendMessage, canSendMessage } = useGuestbook();
   const [authorName, setAuthorName] = useState("");
   const [message, setMessage] = useState("");
@@ -128,7 +134,7 @@ export const GuestbookSection: React.FC = () => {
         setTimeout(() => setSubmitSuccess(false), 3000);
       }
     } catch (err) {
-      setSubmitError("Errore inaspettato durante l'invio");
+      setSubmitError(t("sections.guestbook.unexpectedError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -142,8 +148,8 @@ export const GuestbookSection: React.FC = () => {
       <Stack direction="column" alignItems="center" spacing={3}>
         <SectionHeader
           imgSrc="../sections/calendar.png"
-          altImage="calendario messaggi"
-          title="Lascia un messaggio"
+          altImage={t("sections.guestbook.title")}
+          title={t("sections.guestbook.title")}
         />
 
         <Typography
@@ -151,9 +157,9 @@ export const GuestbookSection: React.FC = () => {
           textAlign="center"
           sx={{ px: 1, color: "text.secondary" }}
         >
-          Condividi i tuoi auguri con noi!
+          {t("sections.guestbook.subtitle")}
           <br />
-          I vostri messaggi rendono questo giorno ancora più speciale.
+          {t("sections.guestbook.description")}
         </Typography>
 
         {/* Form per nuovo messaggio */}
@@ -162,7 +168,7 @@ export const GuestbookSection: React.FC = () => {
             <form onSubmit={handleSubmit}>
               <Stack spacing={3}>
                 <TextField
-                  label="Il tuo nome"
+                  label={t("sections.guestbook.namePlaceholder")}
                   value={authorName}
                   onChange={(e) => setAuthorName(e.target.value)}
                   required
@@ -173,7 +179,7 @@ export const GuestbookSection: React.FC = () => {
 
                 <Box>
                   <TextField
-                    label="Il tuo messaggio"
+                    label={t("sections.guestbook.messagePlaceholder")}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     required
@@ -199,7 +205,7 @@ export const GuestbookSection: React.FC = () => {
 
                 {submitSuccess && (
                   <Alert severity="success">
-                    Messaggio inviato con successo! Grazie per i tuoi auguri.
+                    {t("sections.guestbook.successMessage")}
                   </Alert>
                 )}
 
@@ -221,10 +227,10 @@ export const GuestbookSection: React.FC = () => {
                   {isSubmitting ? (
                     <>
                       <CircularProgress size={20} sx={{ mr: 1 }} />
-                      Invio in corso...
+                      {t("sections.guestbook.sending")}
                     </>
                   ) : (
-                    "Invia messaggio"
+                    t("sections.guestbook.sendButton")
                   )}
                 </Button>
               </Stack>
@@ -247,7 +253,7 @@ export const GuestbookSection: React.FC = () => {
             textAlign="center"
             sx={{ mb: 3, fontWeight: "bold" }}
           >
-            Messaggi degli ospiti ({messages.length})
+            {t("sections.guestbook.messagesTitle")} ({messages.length})
           </Typography>
 
           {loading ? (

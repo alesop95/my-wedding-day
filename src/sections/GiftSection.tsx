@@ -13,12 +13,9 @@ import {
   Typography
 } from "@mui/material";
 import React, { useCallback, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "../common/SectionHeader";
 import { SectionContainer } from "./SectionContainer";
-import {
-  tripDescription1,
-  tripDescription2
-} from "../utils/constants";
 import { useResponsiveDimensions } from "../hooks/useResponsiveDimensions";
 import { useBankConfig } from "../hooks/useBankConfig";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -32,6 +29,7 @@ type BankDetailProps = {
   value: string;
 };
 const BankDetail: React.FC<BankDetailProps> = ({ header, value }) => {
+  const { t } = useTranslation();
   const canUseClipboard = navigator?.clipboard !== undefined;
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   return (
@@ -72,7 +70,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ header, value }) => {
             severity="info"
             sx={{ width: "100%", backgroundColor: "info.main", color: "info.contrastText" }}
           >
-            <Typography>Copiato negli appunti</Typography>
+            <Typography>{t("sections.gift.copiedToClipboard")}</Typography>
           </Alert>
         </Snackbar>
       </TableRow>
@@ -81,6 +79,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ header, value }) => {
 };
 
 export const GiftSection: React.FC = () => {
+  const { t } = useTranslation();
   const [showBankDetails, setShowBankDetails] = React.useState(false);
   const containerRef = React.useRef(null);
   const { aroundTheWorldAnimationWidth, containerWidth } = useResponsiveDimensions();
@@ -105,14 +104,14 @@ export const GiftSection: React.FC = () => {
       <Stack direction={"column"} alignItems={"center"} spacing={0}>
         <SectionHeader
           imgSrc={"../sections/car.png"}
-          altImage={"chiesa"}
-          title={"Lista nozze"}
+          altImage={t("sections.gift.altImage")}
+          title={t("sections.gift.title")}
         />
 
         <Typography variant={"h4"} textAlign={"center"} sx={{ p: 1, pb: 4 }}>
-          {tripDescription1}
+          {t("sections.gift.description1")}
           <br />
-          {tripDescription2}
+          {t("sections.gift.description2")}
         </Typography>
 
         <Box
@@ -156,7 +155,7 @@ export const GiftSection: React.FC = () => {
               variant={"contained"}
               size={"large"}
             >
-              LISTA NOZZE
+              {t("sections.gift.buttonText")}
             </Button>
             {isExploding && (
               <ConfettiExplosion
@@ -177,9 +176,9 @@ export const GiftSection: React.FC = () => {
             >
               <Table size={"small"}>
                 <TableBody>
-                  <BankDetail header={"INTESTATARIO"} value={bankConfig?.owner || ""} />
-                  <BankDetail header={"IBAN"} value={bankConfig?.iban || ""} />
-                  <BankDetail header={"BIC/SEPA"} value={bankConfig?.bicSwift || ""} />
+                  <BankDetail header={t("sections.gift.bankOwner")} value={bankConfig?.owner || ""} />
+                  <BankDetail header={t("sections.gift.bankIban")} value={bankConfig?.iban || ""} />
+                  <BankDetail header={t("sections.gift.bankBic")} value={bankConfig?.bicSwift || ""} />
                   {/* <BankDetail header={"NUMERO CONTO"} value={bank.number} /> */}
                 </TableBody>
               </Table>

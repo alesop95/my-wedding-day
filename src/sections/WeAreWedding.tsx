@@ -1,5 +1,6 @@
 import { CardContent, Typography } from "@mui/material";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useAtom } from "jotai";
 import {
   easterEggAtom,
@@ -8,6 +9,7 @@ import {
 import { easterEggActivationClicks } from "../utils/constants";
 
 const WeAreWedding: React.FC = () => {
+  const { t } = useTranslation();
   const [easterEgg, setEasterEgg] = useAtom(easterEggAtom);
   const [tapCounter, setTapCounter] = useAtom(easterEggClickCounterAtom);
   useEffect(() => {
@@ -27,13 +29,13 @@ const WeAreWedding: React.FC = () => {
           setTapCounter(s => s + 1);
         }}
       >
-        Alessio & Beatrice
+        {t("header.title")}
       </Typography>
       <Typography variant={"h2"} textAlign={"center"} fontFamily={"Gwendolyn"}>
-        sposi
+        {t("header.married")}
       </Typography>
       <Typography variant={"h2"} textAlign={"center"} fontFamily={"Gwendolyn"}>
-        24 Luglio 2027
+        {t("header.subtitle")}
       </Typography>
     </CardContent>
   );

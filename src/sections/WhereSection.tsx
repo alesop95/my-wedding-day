@@ -1,23 +1,25 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "../common/SectionHeader";
 import { SectionContainer } from "./SectionContainer";
 import { AddToCalendarButton } from "add-to-calendar-button-react";
 
-const cerimoniaDescription = `h17.30 - Cerimonia presso Location Cerimonia A`;
 export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
+  const { t, i18n } = useTranslation();
+
   const dates = [
     {
-      name: "Alessio & Beatrice - Sposi",
+      name: t("where.calendarName"),
       startDate: "2027-07-24",
       startTime: "17:30",
       endTime: "18:30",
       endDate: "2027-07-24",
       timeZone: "Europe/Rome",
       description: onlyInfo
-        ? cerimoniaDescription
-        : `${cerimoniaDescription}. A seguire, ricevimento presso Location Ricevimento B`,
-      location: "Location Cerimonia A, Citta Esempio, Italia"
+        ? t("sections.where.ceremonyDescription")
+        : t("sections.where.fullDescription"),
+      location: t("sections.where.calendarLocation")
     }
   ];
   return (
@@ -32,15 +34,15 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
         <Stack direction={"column"} alignItems={"center"} spacing={1}>
           <SectionHeader
             imgSrc={"../sections/church.png"}
-            altImage={"chiesa"}
-            title={"Cerimonia"}
+            altImage={t("sections.where.church")}
+            title={t("sections.where.ceremony")}
           />
 
           <Typography variant={"h4"} textAlign={"center"}>
-            ore 17:30
+            {t("sections.where.time")}
           </Typography>
           <Typography variant={"h5"} textAlign={"center"}>
-            24 Luglio
+            {t("sections.where.date")}
           </Typography>
           <a
             rel="noreferrer"
@@ -58,11 +60,11 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
                 fontWeight={"600"}
                 textAlign={"center"}
               >
-                location cerimonia A
+                {t("sections.where.ceremonyLocation")}
               </Typography>
               <img
                 src={"/sections/map.png"}
-                alt={"map"}
+                alt={t("sections.where.map")}
                 style={{ width: 26, height: 26 }}
               />
             </Stack>
@@ -70,7 +72,7 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
 
           <img
             src={"/sections/church.png"}
-            alt={"cerimonia"}
+            alt={t("sections.where.ceremony")}
             style={{
               width: "90%",
               height: "auto",
@@ -90,12 +92,11 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
             <Stack direction={"column"} alignItems={"center"} spacing={1}>
               <SectionHeader
                 imgSrc={"../sections/restaurant.png"}
-                altImage={"ricevimento"}
-                title={"Ricevimento"}
+                altImage={t("sections.where.receptionAlt")}
+                title={t("sections.where.reception")}
               />
               <Typography variant={"h4"} textAlign={"center"}>
-                dopo la cerimonia saremo lieti <br />
-                di festeggiare insieme presso
+                {t("sections.where.receptionText")}
               </Typography>
               <a
                 rel="noreferrer"
@@ -113,11 +114,11 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
                     fontWeight={"600"}
                     textAlign={"center"}
                   >
-                    location ricevimento B
+                    {t("sections.where.receptionLocation")}
                   </Typography>
                   <img
                     src={"/sections/map.png"}
-                    alt={"map"}
+                    alt={t("sections.where.map")}
                     style={{ width: 26, height: 26 }}
                   />
                 </Stack>
@@ -125,7 +126,7 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
 
               <img
                 src={"/sections/restaurant.png"}
-                alt={"ricevimento"}
+                alt={t("sections.where.receptionAlt")}
                 style={{
                   width: "90%",
                   height: "auto",
@@ -147,9 +148,9 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
           <AddToCalendarButton
             buttonStyle={"round"}
             hideBranding={true}
-            name="Matrimonio Alessio & Beatrice"
-            label={"aggiungi al calendario"}
-            language={"it"}
+            name={t("sections.where.calendarName")}
+            label={t("sections.where.calendarLabel")}
+            language={i18n.language as "it" | "en"}
             dates={dates}
             options={["Google", "Apple", "Yahoo", "Outlook.com"]}
           />

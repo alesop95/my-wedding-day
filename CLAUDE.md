@@ -62,6 +62,7 @@ Ogni feature = **sezione** in `src/sections/` + **hook** in `src/hooks/` + **tip
 - Dati remoti → hook Firebase custom
 - Stato locale/cache → atomi Jotai
 - UI → componenti MUI, colori/spacing/typography **esclusivamente** dal theme (`src/theme.ts`)
+- **Testi e traduzioni** → `react-i18next` obbligatorio per tutti i testi UI. **Zero testi hardcoded** in componenti
 - Errori → fp-ts: `Option<T>` per nullable, `Either<Error, T>` per fallibili, `TaskEither` per async
 - Animazioni → Framer Motion per transizioni, Lottie per animazioni vettoriali
 - Asset statici (URL) → `public/`. Asset importati → `src/images/` o `src/animation/`
@@ -74,6 +75,26 @@ Ogni feature = **sezione** in `src/sections/` + **hook** in `src/hooks/` + **tip
 - `/{familyId}` → ogni famiglia accede tramite URL come credenziale (ID nel path)
 - `useFamilyData` estrae `familyId` dal pathname e carica da Firestore collection `wedding`
 
+### Internazionalizzazione (i18n)
+
+**Sistema:** React-i18next con supporto IT/EN + persistenza localStorage via Jotai  
+**Struttura traduzioni:**
+```
+src/i18n/
+├── index.ts           → Configurazione i18next
+└── locales/
+    ├── it.json        → Traduzioni italiane (default)
+    └── en.json        → Traduzioni inglesi
+```
+
+**Pattern utilizzo obbligatorio:**
+- Ogni componente usa `const { t } = useTranslation()`
+- Zero testi hardcoded: sostituire con `t("sections.componentName.textKey")`
+- Utility functions: versioni i18n (`getWhatsAppMessageI18n`) che accettano funzione `t` come parametro
+- **LanguageSwitcher:** sempre visibile nell'header (top-right, MUI ToggleButtonGroup)
+
+**Regola critica:** Ogni nuovo componente/feature deve usare i18n dal primo commit.
+
 ### Rendering condizionale di App.tsx
 
 ```
@@ -85,18 +106,19 @@ Se result.kind === "error" → <ErrorMask />
 
 Altrimenti:
   <Container>
-    <Header onAnimationComplete />
+    <Header onAnimationComplete />           ← Include LanguageSwitcher
     {headerAnimationEnd && (
-      <WeAreWedding />
-      {isPartyStarted && <GallerySection />}
-      {!isPartyStarted && <AtHome />}
-      <WhereSection onlyInfo={result.data.onlyInfo} />
+      <WeAreWedding />                      ← 100% i18n
+      {isPartyStarted && <GallerySection />} ← 100% i18n
+      {!isPartyStarted && <AtHome />}       ← 100% i18n
+      <WhereSection onlyInfo={result.data.onlyInfo} /> ← 100% i18n
       {!onlyInfo && !isWeddingStarted && (
-        <RSVPSection familyData={result.data} />
-        <HotelSection />
+        <RSVPSection familyData={result.data} />      ← 100% i18n
+        <HotelSection />                              ← 100% i18n
       )}
-      <GiftSection />
-      {!isPartyStarted && <GallerySection />}
+      <GiftSection />                       ← 100% i18n
+      {!isWeddingOver && <GuestbookSection />}       ← 100% i18n
+      {!isPartyStarted && <GallerySection />}        ← 100% i18n
     )}
   </Container>
 ```
@@ -154,6 +176,84 @@ export type FamilyData = {
 | `wedding` | Dati famiglie + membri + RSVP | Lettura: per familyId. Scrittura: utente autenticato |
 | `admin` | Password admin | Lettura: solo client admin |
 | `tables` | Configurazione tavoli ristorante | Lettura/Scrittura: admin ristorante |
+| `guestbook` | Messaggi ospiti con real-time sync | Lettura: pubblico. Scrittura: utenti autenticati. Moderazione: admin |
+
+### GuestbookEntry
+
+```typescript
+export type GuestbookEntry = {
+  id: string;
+  familyId: string;
+  authorName: string;
+  message: string;
+  createdAt: Date;
+};
+```
+
+---
+
+## Feature implementate
+
+### ✅ Feature 1 — Guestbook (COMPLETATA)
+
+**Status:** Implementata e testata ✅  
+**Data completamento:** 2026-04-20  
+**File implementati:**
+- `src/types/guestbook.ts` — Definizione tipo `GuestbookEntry`
+- `src/hooks/useGuestbook.ts` — Hook Firebase per messaggi real-time
+- `src/sections/GuestbookSection.tsx` — UI componente guestbook
+- Collection Firestore: `guestbook`
+
+**Funzionalità:**
+- ✅ Real-time messaging con onSnapshot
+- ✅ Autenticazione anonima Firebase
+- ✅ Validazione form (nome obbligatorio, messaggio max 500 char)
+- ✅ Gestione errori con fp-ts TaskEither pattern
+- ✅ Moderazione admin (eliminazione messaggi)
+- ✅ Fix serverTimestamp() null handling
+- ✅ Test completo su familia reale (`test-family-123`)
+
+**Bug risolti:**
+- 🔧 Race condition auth anonima vs query Firestore
+- 🔧 Error `Cannot read properties of null (reading 'toDate')` da serverTimestamp()
+
+### ✅ Feature 2 — Internazionalizzazione (i18n) Multi-Lingua (COMPLETATA)
+
+**Status:** Implementata e testata ✅  
+**Data completamento:** 2026-04-20  
+**File implementati:**
+- `src/i18n/index.ts` — Configurazione i18next + react-i18next
+- `src/i18n/locales/it.json` — Traduzioni italiane complete (header, sezioni, errori, whatsapp)
+- `src/i18n/locales/en.json` — Traduzioni inglesi complete
+- `src/state/languageAtom.ts` — Persistenza lingua via Jotai localStorage
+- `src/common/LanguageSwitcher.tsx` — Toggle IT/EN nell'header
+
+**Componenti migrati (100% i18n):**
+- ✅ `src/header/index.tsx` — LanguageSwitcher integrato
+- ✅ `src/sections/AtHome.tsx` — Pre-cerimonia completa
+- ✅ `src/sections/WeAreWedding.tsx` — Header sposi
+- ✅ `src/sections/WhereSection.tsx` — Cerimonia + ricevimento + calendario dinamico
+- ✅ `src/sections/HotelSection.tsx` — Alloggi + raccomandazioni 
+- ✅ `src/sections/GallerySection.tsx` — Foto + condivisione
+- ✅ `src/sections/RSVPSection.tsx` — Form RSVP + validazione + errori + note
+- ✅ `src/sections/GiftSection.tsx` — Lista nozze + dettagli bancari
+- ✅ `src/sections/GuestbookSection.tsx` — Messaggi + form + timeAgo
+- ✅ `src/types/family.ts` — getWhatsAppMessageI18n + getWhatsAppMessageReminderI18n
+
+**Funzionalità:**
+- ✅ Toggle lingua IT/EN persistente nell'header
+- ✅ Tutte le UI tradotte con interpolazione dinamica
+- ✅ Logica singolare/plurale nei messaggi WhatsApp
+- ✅ Calendario con lingua dinamica (AddToCalendarButton)
+- ✅ Gestione tempo relativo internazionalizzata
+- ✅ Zero testi hardcoded rimanenti
+
+**Bug risolti:**
+- 🔧 Testi hardcoded sostituiti con pattern t() standardizzato
+- 🔧 Supporto interpolazione variabili ({{count}}, {{familyId}}) 
+- 🔧 Logica lingue integrate nelle utility functions
+
+**Prossima feature da implementare:** Feature 3 — Dashboard RSVP con Grafici
 
 ---
 
@@ -206,9 +306,11 @@ I seguenti colori hardcoded non appartengono alla palette:
 2. **Zero duplicazione stato** — singola fonte di verità per ogni dato
 3. **Zero key basate su index** — usare ID stabili
 4. **Zero colori/spacing hardcoded** — tutto dal theme
-5. **Prima di creare un hook/funzione**, verificare se ne esiste già uno equivalente
-6. **Prima di modificare un componente**, leggere l'intero file e descrivere la logica attuale
-7. **Non modificare file critici senza conferma esplicita**: `App.tsx`, `SectionContainer.tsx`, `GiftSection.tsx`, `WhatsAppWidget.tsx`, `AddFamily.tsx`, `constants.ts`, `family.ts`
+5. **Zero testi hardcoded** — usare `t("sections.component.key")` con react-i18next obbligatorio
+6. **Prima di creare un hook/funzione**, verificare se ne esiste già uno equivalente
+7. **Prima di modificare un componente**, leggere l'intero file e descrivere la logica attuale
+8. **Ogni nuovo componente/feature deve usare i18n** dal primo commit con traduzioni IT + EN
+9. **Non modificare file critici senza conferma esplicita**: `App.tsx`, `SectionContainer.tsx`, `GiftSection.tsx`, `WhatsAppWidget.tsx`, `AddFamily.tsx`, `constants.ts`, `family.ts`
 
 ---
 
@@ -341,8 +443,11 @@ Claude deve mantenere consapevolezza di:
 - Struttura completa del progetto (cartelle, file, dipendenze)
 - Logica routing condizionale (pathname parsing, NO React Router)
 - Logica RSVP (form → Firestore → conferma → confetti)
+- **Logica Guestbook** (real-time messaging, auth anonima, moderazione admin)
+- **Sistema i18n completo** (react-i18next, LanguageSwitcher, pattern t(), zero hardcoded text)
 - Sistema animazioni (Lottie per vettoriali, Framer Motion per transizioni, Confetti per particelle)
 - Stato temporale wedding (`isWeddingStarted`, `isPartyStarted`, `isWeddingOver`)
 - Criticità architetturali elencate sopra
+- **Feature implementate** (Feature 1 - Guestbook, Feature 2 - i18n completate al 100%)
 - Feature backlog completo in `CLAUDE_WEDDING_FEATURES.md`
 - Infrastruttura: Firebase Hosting su dominio `weddingonline.it`

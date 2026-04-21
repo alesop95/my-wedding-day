@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Stack, Typography } from "@mui/material";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { FamilyMember } from "../types/family";
 
 type YouHaveToConfirmProps = {
@@ -9,6 +10,7 @@ type YouHaveToConfirmProps = {
 export const YouHaveToConfirm: React.FC<YouHaveToConfirmProps> = ({
   members
 }) => {
+  const { t } = useTranslation();
   const someOneHasNotConfirmed = members.some(m => m.rsvp === "unknown");
   if (!someOneHasNotConfirmed) {
     return null;
@@ -43,10 +45,10 @@ export const YouHaveToConfirm: React.FC<YouHaveToConfirmProps> = ({
         </motion.div>
         <Typography variant={"subtitle2"} sx={{ color: "#757575" }}>
           {members.length === 1
-            ? "facci sapere se festeggerai con noi"
-            : "facci sapere se festeggerete con noi"}
+            ? t("confirm.promptSingle")
+            : t("confirm.promptPlural")}
           <br />
-          cliccando qui sopra
+          {t("confirm.clickAbove")}
         </Typography>
       </Stack>
     </Stack>

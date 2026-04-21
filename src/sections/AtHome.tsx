@@ -1,10 +1,13 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "../common/SectionHeader";
 import { SectionContainer } from "./SectionContainer";
 
 type AtHomeProps = {};
 export const AtHome: React.FC<AtHomeProps> = () => {
+  const { t } = useTranslation();
+
   return (
     <SectionContainer>
       <Box
@@ -17,22 +20,21 @@ export const AtHome: React.FC<AtHomeProps> = () => {
         <Stack direction={"column"} alignItems={"center"} spacing={1}>
           <SectionHeader
             imgSrc={"../sections/home.png"}
-            altImage={"chiesa"}
-            title={"Prima della cerimonia"}
+            altImage={t("sections.athome.church")}
+            title={t("sections.athome.title")}
           />
           <Typography variant={"h5"} textAlign={"center"}>
-            Se hai piacere di incontrarci prima della cerimonia per bere una
-            cosa insieme e scambiare 4 chiacchere, sei il benvenuto/a!
+            {t("sections.athome.description")}
           </Typography>
           <Stack spacing={2}>
             <Stack direction={"row"} alignItems={"center"} spacing={2}>
               <img
                 src={"../header/mario.svg"}
-                alt={"avatar Mario"}
+                alt={t("header.avatarMario")}
                 style={{ width: 48 }}
               />
               <Typography fontSize={16} textAlign={"left"}>
-                dalle 16h -{" "}
+                {t("sections.athome.timeFrom")}{" "}
                 <a
                   rel="noreferrer"
                   href={"https://example.com/maps/meeting-point-a"}
@@ -43,18 +45,18 @@ export const AtHome: React.FC<AtHomeProps> = () => {
                     color: "#595959"
                   }}
                 >
-                  Punto di incontro A, Citta Esempio
+                  {t("sections.athome.meetingPointA")}
                 </a>
               </Typography>
             </Stack>
             <Stack direction={"row"} alignItems={"center"} spacing={2}>
               <img
                 src={"../header/giulia.svg"}
-                alt={"avatar Giulia"}
+                alt={t("header.avatarGiulia")}
                 style={{ width: 48 }}
               />
               <Typography fontSize={16} textAlign={"left"}>
-                dalle 16h -{" "}
+                {t("sections.athome.timeFrom")}{" "}
                 <a
                   rel="noreferrer"
                   href={"https://example.com/maps/meeting-point-b"}
@@ -65,7 +67,7 @@ export const AtHome: React.FC<AtHomeProps> = () => {
                     color: "#595959"
                   }}
                 >
-                  Punto di incontro B, Citta Esempio
+                  {t("sections.athome.meetingPointB")}
                 </a>
               </Typography>
             </Stack>

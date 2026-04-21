@@ -1,6 +1,7 @@
 import { AnimatedCharacter } from "./AnimatedCharacter";
-import { Stack } from "@mui/material";
+import { Stack, Box } from "@mui/material";
 import { WeddingRings } from "./WeddingRings";
+import { LanguageSwitcher } from "../common/LanguageSwitcher";
 import { motion, useAnimationControls } from "framer-motion";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
@@ -91,6 +92,18 @@ const Header: React.FC<Props> = ({ onAnimationComplete }) => {
   }, [animate, animation, audio, easterEgg]);
   return (
     <Stack direction={"row"} style={{ position: "relative" }} pt={1}>
+      {/* Language Switcher in top right */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 8,
+          right: 16,
+          zIndex: 10004,
+        }}
+      >
+        <LanguageSwitcher />
+      </Box>
+
       <Stack
         style={{
           flex: 1

@@ -1,5 +1,6 @@
 import { SectionHeader } from "../common/SectionHeader";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { SectionContainer } from "./SectionContainer";
 import {
   Alert,
@@ -46,6 +47,7 @@ const ConfirmMember: React.FC<ConfirmMemberProps> = ({
   isUpdating,
   hideName = false
 }) => {
+  const { t } = useTranslation();
   const [isExploding, setIsExploding] = React.useState(false);
   const { containerWidth } = useResponsiveDimensions();
   const noRSVP = member.rsvp === "unknown";
@@ -120,7 +122,7 @@ const ConfirmMember: React.FC<ConfirmMemberProps> = ({
             variant={"h6"}
             className={"disable-text-selection"}
           >
-            {isUpdating ? "...attendi" : "ci sarò!"}
+            {isUpdating ? t("sections.rsvp.waiting") : t("sections.rsvp.willAttend")}
           </Typography>
         </Stack>
         <Stack
@@ -146,7 +148,7 @@ const ConfirmMember: React.FC<ConfirmMemberProps> = ({
             variant={"h6"}
             className={"disable-text-selection"}
           >
-            {isUpdating ? "...attendi" : "purtroppo non ci sarò"}
+            {isUpdating ? t("sections.rsvp.waiting") : t("sections.rsvp.wontAttend")}
           </Typography>
         </Stack>
       </Stack>
@@ -154,9 +156,8 @@ const ConfirmMember: React.FC<ConfirmMemberProps> = ({
   );
 };
 
-const notePlaceholder =
-  "lascia una nota se non mangi pesce 🐟, se hai delle intolleranze alimentari o se hai delle esigenze particolari...premi qui sopra!";
 export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
+  const { t } = useTranslation();
   const [updatedFamilyData, setUpdatedFamilyData] =
     React.useState<FamilyData>(familyData);
   const limitDate = new Date(weddingDate);
@@ -172,15 +173,14 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
       <Stack direction={"column"} alignItems={"center"} spacing={1}>
         <SectionHeader
           imgSrc={"../sections/rsvp.png"}
-          altImage={"rsvp"}
-          title={"La tua presenza"}
+          altImage={t("sections.rsvp.altImage")}
+          title={t("sections.rsvp.title")}
         />
 
         <Typography variant={"h4"} textAlign={"center"} sx={{ px: 1 }}>
-          E' molto utile sapere se festeggerai con noi.
+          {t("sections.rsvp.description1")}
           <br />
-          Per questo ti chiediamo di confermare la tua presenza entro e non
-          oltre il
+          {t("sections.rsvp.description2")}
         </Typography>
         <Typography variant={"h4"} pb={2}>
           <b>{`${limitDate.getDate().toString().padStart(2, "0")}/${(
@@ -213,8 +213,8 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
                   await update(toUpdate);
                   setUpdatedFamilyData(toUpdate);
                 } catch (err) {
-                  console.error("Errore aggiornamento RSVP:", err);
-                  setError("Errore di rete. Riprova tra qualche minuto.");
+                  console.error(t("sections.rsvp.updateError"), err);
+                  setError(t("sections.rsvp.networkError"));
                 } finally {
                   setIsUpdating(false);
                 }
@@ -232,7 +232,7 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
                   size="small"
                   onClick={() => setError(null)}
                 >
-                  OK
+                  {t("sections.rsvp.ok")}
                 </Button>
               }
             >
@@ -265,7 +265,7 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
                 color: "#7e7e7e"
               }}
             >
-              {updatedFamilyData.note || notePlaceholder}
+              {updatedFamilyData.note || t("sections.rsvp.notePlaceholder")}
             </Typography>
           )}
           {isNoteOpen && (
@@ -294,14 +294,14 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
                   setOpenSnackbar(true);
                   setIsNoteOpen(false);
                 } catch (err) {
-                  console.error("Errore salvataggio note:", err);
-                  setError("Errore di rete. Riprova tra qualche minuto.");
+                  console.error(t("sections.rsvp.saveError"), err);
+                  setError(t("sections.rsvp.networkError"));
                 } finally {
                   setIsUpdating(false);
                 }
               }}
             >
-              salva note
+              {t("sections.rsvp.saveNotes")}
             </Button>
             <Button
               variant={"contained"}
@@ -312,7 +312,7 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
                 setIsNoteOpen(false);
               }}
             >
-              annulla
+              {t("sections.rsvp.cancel")}
             </Button>
           </Stack>
         </Box>
@@ -329,10 +329,7 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
         <Box>
           <Stack direction={"column"} alignItems={"center"} spacing={1}>
             <Typography variant={"subtitle2"} textAlign={"center"} p={1}>
-              Se hai domande o dubbi, o per errore abbiamo dimenticato qualcuno,
-              <br />o <b>si aggiungono altre persone alla nostra festa</b>
-              <br />
-              per comunicazioni importanti in generale, contattaci!
+              {t("sections.rsvp.contactInfo")}
             </Typography>
             <WhatsAppWidget />
           </Stack>
@@ -345,7 +342,7 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
         onClose={() => setOpenSnackbar(false)}
       >
         <Alert severity="info" sx={{ width: "100%" }}>
-          <Typography>Note aggiornate, grazie!</Typography>
+          <Typography>{t("sections.rsvp.notesUpdated")}</Typography>
         </Alert>
       </Snackbar>
     </SectionContainer>

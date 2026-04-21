@@ -2,6 +2,7 @@ import { SectionContainer } from "./SectionContainer";
 import { SectionHeader } from "../common/SectionHeader";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Accordion,
   AccordionDetails,
@@ -66,20 +67,21 @@ const hotelList: Hotel[] = [
 ];
 
 export const HotelSection = () => {
+  const { t } = useTranslation();
+
   return (
     <SectionContainer>
       <Stack direction={"column"} alignItems={"center"} spacing={1}>
         <SectionHeader
           imgSrc={"../sections/resort.png"}
-          altImage={"chiesa"}
-          title={"Alloggio"}
+          altImage={t("sections.hotel.altImage")}
+          title={t("sections.hotel.title")}
         />
         <Typography variant={"h4"} textAlign={"center"} sx={{ px: 1 }}>
-          Se desiderate fermarvi qualche giorno in piu, qui trovate una lista
-          di strutture di esempio.
+          {t("sections.hotel.description1")}
         </Typography>
         <Typography variant={"h4"} textAlign={"center"} sx={{ px: 1, pb: 2 }}>
-          Vi consigliamo di prenotare al più presto!
+          {t("sections.hotel.description2")}
         </Typography>
         <Accordion
           style={{
@@ -99,7 +101,7 @@ export const HotelSection = () => {
               textAlign={"center"}
               style={{ color: "black", flex: 1 }}
             >
-              I nostri consigli ({hotelList.length})
+              {t("sections.hotel.recommendations")} ({hotelList.length})
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -137,7 +139,7 @@ export const HotelSection = () => {
                         style={{ textDecoration: "none" }}
                         target={"_blank"}
                       >
-                        posizione
+                        {t("sections.hotel.location")}
                       </Link>
                     )}
                     <Link
@@ -147,7 +149,7 @@ export const HotelSection = () => {
                       style={{ textDecoration: "none" }}
                       target={"_blank"}
                     >
-                      sito web
+                      {t("sections.hotel.website")}
                     </Link>
                     {hotel.phone && (
                       <Typography

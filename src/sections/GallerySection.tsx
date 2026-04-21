@@ -4,12 +4,15 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Box, Button, Typography } from "@mui/material";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export const GallerySection: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <SectionContainer>
       <Typography variant={"h4"} textAlign={"center"} pb={2}>
-        Scorri per vedere le nostre foto
+        {t("sections.gallery.subtitle")}
       </Typography>
       <Box
         display={"flex"}
@@ -45,13 +48,13 @@ export const GallerySection: React.FC = () => {
             <div>
               <img
                 src={"../sections/gallery/placeholder1.svg"}
-                alt={"placeholder gallery 1"}
+                alt={t("sections.gallery.placeholder1")}
               />
             </div>
             <div>
               <img
                 src={"../sections/gallery/placeholder2.svg"}
-                alt={"placeholder gallery 2"}
+                alt={t("sections.gallery.placeholder2")}
               />
             </div>
           </Carousel>
@@ -66,9 +69,7 @@ export const GallerySection: React.FC = () => {
           }}
         >
           <Typography>
-            condividi con noi <b>le tue foto e video</b> realizzati durante il
-            nostro matrimonio
-            <br />
+            {t("sections.gallery.share")}
           </Typography>
         </Button>
       </Box>

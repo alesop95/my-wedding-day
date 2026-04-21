@@ -5,6 +5,7 @@ import theme from "./theme";
 import { ThemeProvider } from "@mui/material";
 import Container from "./container";
 import App from "./App";
+import "./i18n";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

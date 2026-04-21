@@ -1,0 +1,149 @@
+{
+  "header": {
+    "title": "Alessio & Beatrice",
+    "subtitle": "July 24th, 2027",
+    "married": "getting married",
+    "avatarMario": "Mario avatar",
+    "avatarGiulia": "Giulia avatar"
+  },
+  "sections": {
+    "athome": {
+      "title": "Before the ceremony",
+      "church": "church",
+      "description": "If you'd like to meet us before the ceremony to have a drink together and chat, you're welcome!",
+      "timeFrom": "from 4pm -",
+      "meetingPointA": "Meeting point A, Example City",
+      "meetingPointB": "Meeting point B, Example City"
+    },
+    "rsvp": {
+      "title": "Your presence",
+      "altImage": "rsvp",
+      "description1": "It's very helpful to know if you'll celebrate with us.",
+      "description2": "For this reason we ask you to confirm your presence by",
+      "waiting": "...please wait",
+      "willAttend": "I'll be there!",
+      "wontAttend": "unfortunately I won't be there",
+      "notePlaceholder": "leave a note if you don't eat fish 🐟, if you have food allergies or special requirements...click above!",
+      "saveNotes": "save notes",
+      "cancel": "cancel",
+      "contactInfo": "If you have questions or concerns, or if we accidentally forgot someone, or if other people are joining our party for important communications in general, contact us!",
+      "notesUpdated": "Notes updated, thank you!",
+      "networkError": "Network error. Please try again in a few minutes.",
+      "updateError": "RSVP update error:",
+      "saveError": "Error saving notes:",
+      "ok": "OK"
+    },
+    "where": {
+      "title": "Where",
+      "ceremony": "Ceremony",
+      "reception": "Reception",
+      "church": "church",
+      "receptionAlt": "reception",
+      "map": "map",
+      "time": "5:30 PM",
+      "date": "July 24th",
+      "ceremonyLocation": "Ceremony Location A",
+      "receptionLocation": "Reception Location B",
+      "receptionText": "after the ceremony we'll be delighted to celebrate together at",
+      "ceremonyDescription": "5:30 PM - Ceremony at Ceremony Location A",
+      "fullDescription": "5:30 PM - Ceremony at Ceremony Location A. Followed by reception at Reception Location B",
+      "calendarName": "Alessio & Beatrice Wedding",
+      "calendarLabel": "add to calendar",
+      "calendarLocation": "Ceremony Location A, Example City, Italy"
+    },
+    "gift": {
+      "title": "Wedding Gift List",
+      "altImage": "gift",
+      "description1": "Your presence will be the most beautiful gift for us and we don't ask for more than what we have.",
+      "description2": "If you wish, you can contribute to make our honeymoon unforgettable, we love traveling and discovering new places and people.",
+      "buttonText": "WEDDING GIFT LIST",
+      "bankOwner": "ACCOUNT HOLDER",
+      "bankIban": "IBAN",
+      "bankBic": "BIC/SEPA",
+      "copiedToClipboard": "Copied to clipboard"
+    },
+    "guestbook": {
+      "title": "Leave a message",
+      "subtitle": "Share your wishes with us!",
+      "description": "Your messages make this day even more special.",
+      "namePlaceholder": "Your name",
+      "messagePlaceholder": "Your message",
+      "send": "Send Message",
+      "nameRequired": "Name is required",
+      "messageRequired": "Message is required",
+      "messageMaxLength": "Message cannot exceed {{count}} characters",
+      "messageSent": "Message sent successfully!",
+      "noMessages": "No messages yet. Be the first to leave a wish!",
+      "unexpectedError": "Unexpected error while sending",
+      "messagesTitle": "Guest Messages",
+      "sendButton": "Send Message",
+      "sending": "Sending...",
+      "successMessage": "Message sent successfully! Thank you for your wishes."
+    },
+    "gallery": {
+      "title": "Gallery",
+      "subtitle": "Scroll to see our photos",
+      "share": "share with us your photos and videos from our wedding",
+      "placeholder1": "placeholder gallery 1",
+      "placeholder2": "placeholder gallery 2"
+    },
+    "hotel": {
+      "title": "Accommodation",
+      "altImage": "accommodation",
+      "description1": "If you'd like to stay a few more days, here's a list of example accommodations.",
+      "description2": "We recommend booking as soon as possible!",
+      "recommendations": "Our recommendations",
+      "location": "location",
+      "website": "website"
+    },
+    "menu": {
+      "title": "Menu"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "close": "Close",
+    "save": "Save"
+  },
+  "timeAgo": {
+    "now": "now",
+    "minuteAgo": "1 minute ago",
+    "minutesAgo": "{{count}} minutes ago",
+    "hourAgo": "1 hour ago",
+    "hoursAgo": "{{count}} hours ago",
+    "dayAgo": "1 day ago",
+    "daysAgo": "{{count}} days ago"
+  },
+  "whatsapp": {
+    "invitation": {
+      "greeting": "Hi! How are you? Hope everything is well.\nWe have fantastic news to share!\n\n💍 We are excited to",
+      "inviteYouSingle": "invite you",
+      "inviteYouPlural": "invite you",
+      "toWedding": "to our wedding!\nYou will find all the details and confirm your presence on our website",
+      "toWeddingPlural": "to our wedding!\nYou will find all the details and confirm your presence on our website",
+      "website": "https://evento-alessio-beatrice.example/{{familyId}}",
+      "closing": "We can't wait to celebrate together 🎉🎉!\nAlessio & Beatrice"
+    },
+    "reminder": {
+      "greeting": "Hi! How are you? Hope everything is well.\nTo organize our wedding party 🤵🏻👰🏻‍ in the best way, it's important to know the attendance of all guests.",
+      "weddingDate": "Our wedding day will be July 24th, 2027 and it would be very helpful if",
+      "confirmSingle": "you could",
+      "confirmPlural": "you could",
+      "confirmPresence": "confirm your presence on the digital invitation\nby *June 24th, 2027*",
+      "presenceSingle": "your",
+      "presencePlural": "your",
+      "websiteReminder": "👉 https://evento-alessio-beatrice.example/{{familyId}} (in the \"Your presence\" section)",
+      "thanks": "Thank you for your kindness and understanding.\nAlessio & Beatrice",
+      "politenessSingle": "your",
+      "politenessPlural": "your"
+    }
+  },
+  "confirm": {
+    "promptSingle": "let us know if you'll celebrate with us",
+    "promptPlural": "let us know if you'll celebrate with us",
+    "clickAbove": "by clicking above"
+  }
+}
