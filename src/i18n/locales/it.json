@@ -98,6 +98,33 @@
     },
     "menu": {
       "title": "Menù"
+    },
+    "dashboard": {
+      "title": "Dashboard RSVP",
+      "loadError": "Errore nel caricamento della dashboard",
+      "noData": "Nessun dato disponibile",
+      "generatingPDF": "Generazione PDF...",
+      "downloadReport": "Scarica Report PDF",
+      "rsvpSummary": "Riepilogo Risposte",
+      "totalInvited": "Invitati Totali",
+      "confirmed": "Confermati",
+      "declined": "Rifiutati",
+      "pending": "In Attesa",
+      "maybe": "Forse",
+      "people": "persone",
+      "rsvpBySide": "Risposte per Lato",
+      "overallStatus": "Stato Generale",
+      "allergiesTitle": "Allergie e Intolleranze",
+      "cocktailTitle": "Preferenze Cocktail",
+      "memberName": "Nome",
+      "allergies": "Allergie",
+      "dietaryNotes": "Note Alimentari",
+      "drinkPreference": "Preferenza Bevanda",
+      "popularDrinks": "Bevande Più Richieste",
+      "detailedPreferences": "Preferenze Dettagliate",
+      "noAllergiesData": "Nessuna allergia segnalata",
+      "noCocktailData": "Nessuna preferenza cocktail specificata",
+      "lastUpdated": "Ultimo aggiornamento"
     }
   },
   "common": {

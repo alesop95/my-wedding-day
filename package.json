@@ -22,6 +22,8 @@
     "immer": "^9.0.21",
     "jotai": "^2.0.3",
     "jsonexport": "^3.2.0",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.7",
     "lottie-react": "^2.4.0",
     "react": "^18.2.0",
     "react-confetti-explosion": "^2.0.2",
@@ -29,6 +31,7 @@
     "react-i18next": "^17.0.4",
     "react-responsive-carousel": "^3.2.23",
     "react-scripts": "5.0.1",
+    "recharts": "^3.8.1",
     "typescript": "^5.0.2",
     "web-vitals": "^2.1.0"
   },

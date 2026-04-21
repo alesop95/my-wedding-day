@@ -98,6 +98,33 @@
     },
     "menu": {
       "title": "Menu"
+    },
+    "dashboard": {
+      "title": "RSVP Dashboard",
+      "loadError": "Error loading dashboard",
+      "noData": "No data available",
+      "generatingPDF": "Generating PDF...",
+      "downloadReport": "Download PDF Report",
+      "rsvpSummary": "RSVP Summary",
+      "totalInvited": "Total Invited",
+      "confirmed": "Confirmed",
+      "declined": "Declined",
+      "pending": "Pending",
+      "maybe": "Maybe",
+      "people": "people",
+      "rsvpBySide": "RSVP by Side",
+      "overallStatus": "Overall Status",
+      "allergiesTitle": "Allergies and Intolerances",
+      "cocktailTitle": "Cocktail Preferences",
+      "memberName": "Name",
+      "allergies": "Allergies",
+      "dietaryNotes": "Dietary Notes",
+      "drinkPreference": "Drink Preference",
+      "popularDrinks": "Most Requested Drinks",
+      "detailedPreferences": "Detailed Preferences",
+      "noAllergiesData": "No allergies reported",
+      "noCocktailData": "No cocktail preferences specified",
+      "lastUpdated": "Last updated"
     }
   },
   "common": {

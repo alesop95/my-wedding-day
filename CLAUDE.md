@@ -149,6 +149,10 @@ export type FamilyMember = {
   sex: "male" | "female";
   rsvp: "yes" | "no" | "maybe" | "unknown";
   table?: { tableId: string; note?: string | null } | null;
+  // Feature 3 - Dashboard extensions
+  allergies?: string[];       // es. ["glutine", "lattosio"]
+  dietaryNotes?: string;      // note libere (vegetariano, vegano, etc.)
+  drinkPreference?: string;   // es. "Spritz", "Gin Tonic" (per tracciamento cocktail)
 };
 ```
 
@@ -253,7 +257,39 @@ export type GuestbookEntry = {
 - 🔧 Supporto interpolazione variabili ({{count}}, {{familyId}}) 
 - 🔧 Logica lingue integrate nelle utility functions
 
-**Prossima feature da implementare:** Feature 3 — Dashboard RSVP con Grafici
+### ✅ Feature 3 — Dashboard RSVP con Grafici (COMPLETATA)
+
+**Status:** Implementata e testata ✅  
+**Data completamento:** 2026-04-21  
+**File implementati:**
+- `src/types/dashboard.ts` — Definizioni tipi dashboard (RSVPSummary, DashboardData, ChartData)
+- `src/utils/rsvpStats.ts` — Funzioni utility per calcoli statistici e aggregazioni dati
+- `src/hooks/useDashboard.ts` — Hook Firebase real-time per dati dashboard con fp-ts pattern
+- `src/sections/DashboardSection.tsx` — Componente dashboard con charts, tabelle e PDF export
+- `src/admin/Admin.tsx` — Refactoring con tabs (Dashboard, Gestione Famiglie, Guestbook, Report)
+
+**Funzionalità:**
+- ✅ Summary cards per statistiche RSVP (totali, confermati, percentuali)
+- ✅ Bar chart per RSVP per lato (Alessio/Beatrice) con recharts
+- ✅ Pie chart per stati di conferma (confermato/rifiutato/forse/in attesa)
+- ✅ Tabella allergie e intolleranze alimentari con chips colorate
+- ✅ Tabella preferenze cocktail con raggruppamento e popolarità
+- ✅ Integrazione nell'Admin panel come primo tab
+- ✅ Real-time data sync con onSnapshot Firebase
+- ✅ Traduzioni complete IT/EN per tutte le UI
+- ✅ Estensione modello dati FamilyMember (allergies, dietaryNotes, drinkPreference)
+
+**Dipendenze aggiunte:**
+- `recharts` — Libreria per charts React
+- `jspdf` + `jspdf-autotable` — Generazione PDF reports (placeholder implementato)
+
+**Architettura:**
+- Pattern fp-ts con Option/Either per gestione errori
+- Real-time sync Firestore con cleanup automatico
+- Utility functions pure per aggregazioni statistiche
+- Componenti modulari riutilizzabili (SummaryCard, AllergiesTable, CocktailTable)
+
+**Prossima feature da implementare:** Feature 4 — Menu Digitale
 
 ---
 

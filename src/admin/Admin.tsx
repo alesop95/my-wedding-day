@@ -10,9 +10,11 @@ import {
   TableBody,
   TableContainer,
   ThemeProvider,
-  Typography
+  Typography,
+  Tab,
+  Tabs
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAdminData } from "../hooks/useAdmin";
 import { ThemeOptions } from "@mui/material/styles";
 import { function as F } from "fp-ts";
@@ -21,6 +23,7 @@ import { AddFamily } from "./AddFamily";
 import { FamilyData } from "../types/family";
 import { Report } from "./Report";
 import { GuestbookModeration } from "./GuestbookModeration";
+import { DashboardSection } from "../sections/DashboardSection";
 
 export const themeOptions: ThemeOptions = {
   palette: {
@@ -35,8 +38,38 @@ export const themeOptions: ThemeOptions = {
 };
 const theme = F.pipe(createTheme(themeOptions), responsiveFontSizes);
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`admin-tabpanel-${index}`}
+      aria-labelledby={`admin-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `admin-tab-${index}`,
+    'aria-controls': `admin-tabpanel-${index}`,
+  };
+}
+
 export const Admin = () => {
-  const [familyData, setFamilyData] = React.useState<FamilyData[] | null>(null);
+  const [familyData, setFamilyData] = useState<FamilyData[] | null>(null);
+  const [tabValue, setTabValue] = useState(0);
   const { data, loading, error, refetch } = useAdminData();
 
   useEffect(() => {
@@ -44,6 +77,10 @@ export const Admin = () => {
       setFamilyData(data);
     }
   }, [data]);
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
 
   if (loading) {
     return (
@@ -79,20 +116,25 @@ export const Admin = () => {
   if (!familyData) {
     return null;
   }
+
   return (
     <ThemeProvider theme={theme}>
-      <Box
-        display={"flex"}
-        style={{
-          width: "100%",
-          alignItems: "center",
-          flexDirection: "column",
-          marginBottom: 10,
-          marginTop: 10
-        }}
-      >
-        <Box display="flex" gap={2} mb={2} alignItems="center">
-          <Report data={familyData} />
+      <Box sx={{ width: "100%", minHeight: "100vh" }}>
+        {/* Header with navigation buttons */}
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: 'divider',
+            px: 3,
+            pt: 2,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          <Typography variant="h4" component="h1">
+            Pannello Amministrazione
+          </Typography>
           <Button
             variant="outlined"
             color="secondary"
@@ -106,28 +148,65 @@ export const Admin = () => {
             Vai ai Tavoli
           </Button>
         </Box>
-        <AddFamily
-          currentIds={new Set(familyData.map(p => p.id))}
-          onFamilyAdded={newFamily => {
-            setFamilyData([newFamily, ...familyData]);
-          }}
-        />
 
-        <GuestbookModeration />
-
-        <Box display={"flex"} style={{ width: "90%" }}>
-          <TableContainer component={Paper} sx={{ m: 2 }}>
-            <Table size={"small"}>
-              <TableBody>
-                {familyData
-                  .sort((a, b) => a.family.localeCompare(b.family))
-                  .map(p => (
-                    <FamilyRow familyData={p} key={`family_${p.id}`} />
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+        {/* Tabs */}
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={tabValue} onChange={handleTabChange} aria-label="admin tabs">
+            <Tab label="Dashboard" {...a11yProps(0)} />
+            <Tab label="Gestione Famiglie" {...a11yProps(1)} />
+            <Tab label="Moderazione Guestbook" {...a11yProps(2)} />
+            <Tab label="Report" {...a11yProps(3)} />
+          </Tabs>
         </Box>
+
+        {/* Tab Panels */}
+        <TabPanel value={tabValue} index={0}>
+          {/* Dashboard Tab */}
+          <DashboardSection />
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={1}>
+          {/* Family Management Tab */}
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            gap={3}
+          >
+            <AddFamily
+              currentIds={new Set(familyData.map(p => p.id))}
+              onFamilyAdded={newFamily => {
+                setFamilyData([newFamily, ...familyData]);
+              }}
+            />
+
+            <Box sx={{ width: "100%", maxWidth: 1400 }}>
+              <TableContainer component={Paper}>
+                <Table size="small">
+                  <TableBody>
+                    {familyData
+                      .sort((a, b) => a.family.localeCompare(b.family))
+                      .map(p => (
+                        <FamilyRow familyData={p} key={`family_${p.id}`} />
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </Box>
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={2}>
+          {/* Guestbook Moderation Tab */}
+          <GuestbookModeration />
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={3}>
+          {/* Report Tab */}
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Report data={familyData} />
+          </Box>
+        </TabPanel>
       </Box>
     </ThemeProvider>
   );

@@ -10,6 +10,10 @@ export type FamilyMember = {
     tableId: string;
     note?: string | null;
   } | null;
+  // Feature 3 - Dashboard extensions
+  allergies?: string[];       // es. ["glutine", "lattosio"]
+  dietaryNotes?: string;      // note libere (vegetariano, vegano, etc.)
+  drinkPreference?: string;   // es. "Spritz", "Gin Tonic" (per tracciamento cocktail)
 };
 export type FamilyData = {
   family: string;
