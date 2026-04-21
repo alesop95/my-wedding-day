@@ -26,6 +26,7 @@ import { useUpdateFamilyData } from "../hooks/useFamilyData";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { FamilyMembers } from "./FamilyMembers";
+import { EditableFamilyMembers } from "./EditableFamilyMembers";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -266,8 +267,15 @@ export const FamilyRow: React.FC<FamilyRowProps> = ({ familyData }) => {
       </Snackbar>
       <TableRow>
         <Collapse in={open} timeout="auto" unmountOnExit sx={{ m: 1 }}>
-          <Box>
-            <FamilyMembers data={familyData} key={`members_${familyData.id}`} />
+          <Box sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              Membri della famiglia: {localData.family}
+            </Typography>
+            <EditableFamilyMembers
+              data={localData}
+              onDataUpdate={(updatedData) => setLocalData(updatedData)}
+              key={`editable_members_${familyData.id}`}
+            />
           </Box>
           <Box>
             {localData.note && (

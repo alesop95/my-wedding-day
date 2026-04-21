@@ -124,7 +124,8 @@
       "detailedPreferences": "Detailed Preferences",
       "noAllergiesData": "No allergies reported",
       "noCocktailData": "No cocktail preferences specified",
-      "lastUpdated": "Last updated"
+      "lastUpdated": "Last updated",
+      "pdfError": "Error generating PDF"
     }
   },
   "common": {

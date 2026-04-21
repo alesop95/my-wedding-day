@@ -169,7 +169,10 @@ export const AddFamily: React.FC<AddFamilyProps> = ({
                 isChild: false,
                 recipient: false,
                 sex: "male",
-                rsvp: "unknown"
+                rsvp: "unknown",
+                allergies: [],
+                dietaryNotes: "",
+                drinkPreference: ""
               });
             }));
           }}

@@ -38,6 +38,7 @@ import { SectionHeader } from "../common/SectionHeader";
 import { SectionContainer } from "./SectionContainer";
 import { useDashboard } from "../hooks/useDashboard";
 import { rsvpToPieChartData, sideToBarChartData, groupCocktailPreferences, groupAllergies } from "../utils/rsvpStats";
+import { generateDashboardPDF } from "../utils/pdfGenerator";
 import { motion } from "framer-motion";
 
 // Summary card component
@@ -222,14 +223,12 @@ export const DashboardSection: React.FC = () => {
 
     setIsGeneratingPDF(true);
     try {
-      // TODO: Implement PDF generation with jsPDF
-      // This is a placeholder for the PDF generation functionality
-      console.log("PDF generation would happen here", data);
-      alert("PDF generation feature coming soon!");
+      generateDashboardPDF(data);
+      // Short delay to show loading state
+      setTimeout(() => setIsGeneratingPDF(false), 500);
     } catch (err) {
       console.error("Error generating PDF:", err);
-      alert("Errore nella generazione del PDF");
-    } finally {
+      alert(t("sections.dashboard.pdfError") || "Errore nella generazione del PDF");
       setIsGeneratingPDF(false);
     }
   };
