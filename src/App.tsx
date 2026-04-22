@@ -26,6 +26,7 @@ import { Restaurant } from "./restaurant";
 import { AtHome } from "./sections/AtHome";
 import { WeddingIsOver } from "./sections/WeddingIsOver";
 import { GuestbookSection } from "./sections/GuestbookSection";
+import { PhotoSharingSection } from "./sections/PhotoSharingSection";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -134,6 +135,7 @@ const App = () => {
           )}
           <GiftSection />
           {!isWeddingOver && <GuestbookSection />}
+          <PhotoSharingSection />
           {!isPartyStarted && <GallerySection />}
         </motion.div>
       )}

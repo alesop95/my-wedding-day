@@ -99,6 +99,16 @@
     "menu": {
       "title": "Menu"
     },
+    "photoSharing": {
+      "title": "Share your photos",
+      "subtitle": "Did you take some great photos?",
+      "description": "Scan the QR code or click the button to upload your photos and videos to our shared folder!",
+      "instruction": "📸 Scan to share",
+      "howTo": "Open your smartphone camera and point it at the QR code",
+      "openDrive": "Open Photo Folder",
+      "tip": "You can upload photos and videos directly to the shared folder",
+      "loadError": "Error loading photo configuration"
+    },
     "dashboard": {
       "title": "RSVP Dashboard",
       "loadError": "Error loading dashboard",

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTestingMode } from "./useTestingMode";
 
 export const useWedding = () => {
+  const { forcePartyStarted } = useTestingMode();
   const [isWeddingStarted, setIsWeddingStarted] = useState(false);
   const [isWeddingOver, setIsWeddingOver] = useState(false);
   const [isPartyStarted, setIsPartyStarted] = useState(false);
@@ -25,5 +27,9 @@ export const useWedding = () => {
       clearInterval(interval);
     };
   }, [computeTime]);
-  return { isWeddingStarted, isPartyStarted, isWeddingOver };
+  return {
+    isWeddingStarted: forcePartyStarted ? true : isWeddingStarted,
+    isPartyStarted: forcePartyStarted ? true : isPartyStarted,
+    isWeddingOver
+  };
 };

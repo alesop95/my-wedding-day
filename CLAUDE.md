@@ -181,6 +181,7 @@ export type FamilyData = {
 | `admin` | Password admin | Lettura: solo client admin |
 | `tables` | Configurazione tavoli ristorante | Lettura/Scrittura: admin ristorante |
 | `guestbook` | Messaggi ospiti con real-time sync | Lettura: pubblico. Scrittura: utenti autenticati. Moderazione: admin |
+| `config/photoSharing` | Configurazione condivisione foto | Lettura: pubblico. Scrittura: solo admin console |
 
 ### GuestbookEntry
 
@@ -191,6 +192,22 @@ export type GuestbookEntry = {
   authorName: string;
   message: string;
   createdAt: Date;
+};
+```
+
+### PhotoSharingConfig
+
+```typescript
+export type PhotoSharingConfig = {
+  driveUrl: string;
+  enabled: boolean;
+  visibleFrom?: string; // ISO timestamp quando la feature diventa visibile
+};
+
+export type PhotoSharingState = {
+  config: O.Option<PhotoSharingConfig>;
+  loading: boolean;
+  error: O.Option<string>;
 };
 ```
 
@@ -241,7 +258,8 @@ export type GuestbookEntry = {
 - ✅ `src/sections/GallerySection.tsx` — Foto + condivisione
 - ✅ `src/sections/RSVPSection.tsx` — Form RSVP + validazione + errori + note
 - ✅ `src/sections/GiftSection.tsx` — Lista nozze + dettagli bancari
-- ✅ `src/sections/GuestbookSection.tsx` — Messaggi + form + timeAgo
+- ✅ `src/sections/GuestbookSection.tsx` — Messaggi + form + timeAgo  
+- ✅ `src/sections/PhotoSharingSection.tsx` — QR code + Google Drive condivisione
 - ✅ `src/types/family.ts` — getWhatsAppMessageI18n + getWhatsAppMessageReminderI18n
 
 **Funzionalità:**
@@ -260,7 +278,7 @@ export type GuestbookEntry = {
 ### ✅ Feature 3 — Dashboard RSVP con Grafici (COMPLETATA)
 
 **Status:** Implementata e testata ✅  
-**Data completamento:** 2026-04-21  
+**Data completamento:** 2026-04-22  
 **File implementati:**
 - `src/types/dashboard.ts` — Definizioni tipi dashboard (RSVPSummary, DashboardData, ChartData)
 - `src/utils/rsvpStats.ts` — Funzioni utility per calcoli statistici e aggregazioni dati
@@ -289,7 +307,47 @@ export type GuestbookEntry = {
 - Utility functions pure per aggregazioni statistiche
 - Componenti modulari riutilizzabili (SummaryCard, AllergiesTable, CocktailTable)
 
-**Prossima feature da implementare:** Feature 4 — Menu Digitale
+### ✅ Feature 4 — Condivisione Foto Ospiti (COMPLETATA)
+
+**Status:** Implementata e testata ✅  
+**Data completamento:** 2026-04-21  
+**File implementati:**
+- `src/hooks/usePhotoSharing.ts` — Hook Firebase per config foto condivisione con data-based visibility
+- `src/sections/PhotoSharingSection.tsx` — UI componente QR code + Google Drive
+- `src/hooks/useTestingMode.ts` — Sistema testing mode avanzato
+- Collection Firestore: `config/photoSharing`
+- Dipendenza: `qrcode.react@4.2.0` per generazione QR codes
+
+**Funzionalità:**
+- ✅ QR code dinamico che punta a Google Drive cartella condivisa
+- ✅ Fallback button per apertura diretta Google Drive
+- ✅ Sistema testing mode avanzato (query param, localStorage, environment variable)
+- ✅ Controllo data-based visibility con `visibleFrom` field
+- ✅ Gestione sicura date invalid con graceful fallback
+- ✅ Real-time config sync da Firestore `config/photoSharing`
+- ✅ Traduzioni complete IT/EN per tutte le UI
+- ✅ Animazioni Framer Motion e responsive design
+
+**Configurazione Firestore:**
+```javascript
+// Collection: config, Document: photoSharing
+{
+  enabled: true,
+  driveUrl: "https://drive.google.com/drive/folders/...",
+  visibleFrom: "2027-07-24T19:30:00.000Z" // ISO timestamp
+}
+```
+
+**Testing Mode:**
+- Query parameter: `?testing=true`
+- LocalStorage: `wedding-testing-mode=true` 
+- Environment: `REACT_APP_TESTING_MODE=true`
+- Console utilities: `window.weddingTesting.enable()`, `disable()`, `check()`
+
+**Bug risolti:**
+- 🔧 "Invalid time value" crash fix su date parsing
+- 🔧 Testing mode override completo per visibilità
+- 🔧 Posizionamento componente dopo GiftSection
 
 ---
 

@@ -99,6 +99,16 @@
     "menu": {
       "title": "Menù"
     },
+    "photoSharing": {
+      "title": "Condividi le tue foto",
+      "subtitle": "Hai scattato delle belle foto?",
+      "description": "Scansiona il codice QR o clicca il pulsante per caricare le tue foto e video nella nostra cartella condivisa!",
+      "instruction": "📸 Scansiona per condividere",
+      "howTo": "Apri la fotocamera del tuo smartphone e inquadra il codice QR",
+      "openDrive": "Apri Cartella Foto",
+      "tip": "Potrai caricare foto e video direttamente nella cartella condivisa",
+      "loadError": "Errore nel caricamento della configurazione foto"
+    },
     "dashboard": {
       "title": "Dashboard RSVP",
       "loadError": "Errore nel caricamento della dashboard",
