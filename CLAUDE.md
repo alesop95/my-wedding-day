@@ -109,29 +109,75 @@ Altrimenti:
     <Header onAnimationComplete />           ← Include LanguageSwitcher
     {headerAnimationEnd && (
       <WeAreWedding />                      ← 100% i18n
-      {isPartyStarted && <GallerySection />} ← 100% i18n
-      {!isPartyStarted && <AtHome />}       ← 100% i18n
+      {showAtHome && <AtHome />}            ← 100% i18n
       <WhereSection onlyInfo={result.data.onlyInfo} /> ← 100% i18n
-      {!onlyInfo && !isWeddingStarted && (
-        <RSVPSection familyData={result.data} />      ← 100% i18n
-        <HotelSection />                              ← 100% i18n
+      {!onlyInfo && (
+        {showRSVP && <RSVPSection familyData={result.data} />}  ← 100% i18n
+        {showHotel && <HotelSection />}                          ← 100% i18n
       )}
       <GiftSection />                       ← 100% i18n
-      {!isWeddingOver && <GuestbookSection />}       ← 100% i18n
-      {!isPartyStarted && <GallerySection />}        ← 100% i18n
+      {showGuestbook && <GuestbookSection />}        ← 100% i18n
+      <PhotoSharingSection />               ← visibilità interna (Feature 4)
+      <GallerySection />                    ← sempre visibile (Opzione A)
     )}
   </Container>
 ```
 
-### Stato temporale (`useWedding.ts`)
+I flag `show*` provengono da `useWedding` (Layer 3) e combinano tempo reale + testing override. Vedi "Architettura Stato Temporale + Testing Mode (3 Layer)".
 
-| Flag | Condizione | Significato |
+### Architettura Stato Temporale + Testing Mode (3 Layer)
+
+Lo stato temporale del matrimonio e gli override di testing sono separati in tre layer distinti con responsabilità singola. Questa separazione evita che il testing mode inneschi accidentalmente guardrail di business logic (bug silenzioso pre-refactor: `forcePartyStarted` bloccava update RSVP in `useFamilyData`).
+
+#### Layer 1 — `useWeddingTime` (tempo reale PURO)
+
+Espone lo stato temporale basato sull'orologio di sistema. **Nessun override di testing**.
+
+| Flag | Condizione reale | Uso |
 |---|---|---|
-| `isWeddingStarted` | `now > 24/07/2027 00:00` | Il matrimonio è iniziato |
-| `isPartyStarted` | `now > 24/07/2027 19:30` | La festa è iniziata |
-| `isWeddingOver` | `now >= 25/07/2027 00:00` | Tutto finito → schermata statica |
+| `isWeddingStarted` | `now > 24/07/2027 00:00` | Business logic (guardrail RSVP) |
+| `isPartyStarted` | `now > 24/07/2027 19:30` | Composizione UI |
+| `isWeddingOver` | `now >= 25/07/2027 00:30` | Routing (redirect `WeddingIsOver`) |
 
-Aggiornamento: ogni 15 minuti via `setInterval`.
+Date centralizzate in `src/utils/constants.ts`: `weddingDate`, `partyStartDate`, `weddingEndDate` (Single Source of Truth — NON hardcodare `new Date(2027,...)` altrove).
+
+Aggiornamento: ogni 15 minuti via `setInterval` con cleanup corretto.
+
+**Consumer**: `useFamilyData` (guardrail RSVP), `useWedding` (composizione).
+
+#### Layer 2 — `useTestingMode` (override di visibilità)
+
+Espone il master `isTestingMode` e 5 flag granulari per sezioni condizionali. Attivabile via query param (`?testing=true`), localStorage (`wedding-testing-mode=true`) o env (`REACT_APP_TESTING_MODE=true`).
+
+Quando `isTestingMode === true`, tutti i `forceXVisible` diventano `true`:
+- `forceAtHomeVisible`
+- `forceRSVPVisible`
+- `forceHotelVisible`
+- `forceGuestbookVisible`
+- `forcePhotoSharingVisible`
+
+**Regola**: il testing mode controlla SOLO la visibilità UI, MAI la business logic (che usa `useWeddingTime`).
+
+**Consumer**: `useWedding`, `usePhotoSharing`.
+
+#### Layer 3 — `useWedding` (composition layer)
+
+Combina Layer 1 + Layer 2 ed espone flag `show*` pronti per il rendering condizionale in `App.tsx`. Formula: `showX = forceXVisible || condizione_temporale_reale`.
+
+| Flag UI | Formula |
+|---|---|
+| `showAtHome` | `forceAtHomeVisible \|\| !isPartyStarted` |
+| `showRSVP` | `forceRSVPVisible \|\| !isWeddingStarted` |
+| `showHotel` | `forceHotelVisible \|\| !isWeddingStarted` |
+| `showGuestbook` | `forceGuestbookVisible \|\| !isWeddingOver` |
+
+Espone anche i flag reali (`isWeddingStarted`, `isPartyStarted`, `isWeddingOver`) come pass-through per consumer che leggono lo stato senza i flag di visibilità.
+
+**Note**:
+- `GallerySection` è **sempre visibile** in fondo (nessun gate — Opzione A del refactor, ordine canonico stabile).
+- `PhotoSharingSection` decide la sua visibilità internamente via `usePhotoSharing` (logica `visibleFrom` + `forcePhotoSharingVisible`).
+
+**Consumer**: `App.tsx` (rendering condizionale).
 
 ---
 
@@ -370,7 +416,7 @@ export type PhotoSharingState = {
 ### 🔴 Bug
 
 1. **useNeedToRefresh.ts** — Memory leak: il cleanup di `useEffect` rimuove `() => {}` (funzione anonima nuova) anziché `checkIfNeedToRefresh`. Il listener originale resta attivo per sempre. Inoltre la logica del timer è incoerente: `diff / (1000 * 60 * minutes)` con `minutes=30` produce un valore confrontato con `24`, quindi il refresh scatta dopo `24 * 30 = 720 minuti` (12 ore), non dopo 30 minuti.
-2. **useWedding.ts** — `setInterval` fuori da `useEffect` (memory leak), nessun cleanup. Ogni render crea un nuovo interval senza cancellare i precedenti.
+2. ~~**useWedding.ts** — `setInterval` fuori da `useEffect` (memory leak), nessun cleanup.~~ ✅ **Risolto** dal refactor 3-layer (2026-04-23): il `setInterval` è ora correttamente dentro `useEffect` in `useWeddingTime.ts` con cleanup.
 
 ### 🟡 Problemi architetturali
 

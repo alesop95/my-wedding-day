@@ -1,6 +1,25 @@
 // Responsive dimensions moved to useResponsiveDimensions hook
 export const easterEggActivationClicks = 5;
+
+// ============================================================================
+// Wedding Dates — Single Source of Truth
+// ============================================================================
+// Tutte le date del matrimonio sono centralizzate qui per evitare duplicazione.
+// NON hardcodare `new Date(2027, ...)` altrove nel codice.
+
+/** Inizio del matrimonio: 24 Luglio 2027, 00:00 */
 export const weddingDate = new Date(2027, 6, 24);
+
+/** Inizio della festa/ricevimento: 24 Luglio 2027, 19:30 */
+export const partyStartDate = new Date(2027, 6, 24, 19, 30);
+
+/**
+ * Fine del matrimonio con grace period: 25 Luglio 2027, 00:30.
+ * Il grace period di 30 minuti dopo mezzanotte evita race condition
+ * e perdita di stati non persistiti durante la transizione.
+ */
+export const weddingEndDate = new Date(2027, 6, 25, 0, 30);
+
 export const confirmDaysBefore = 45;
 export const bank = {
   iban: "IT52W0306968873100000018352",

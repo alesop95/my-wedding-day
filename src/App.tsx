@@ -49,7 +49,7 @@ const App = () => {
   const [headerAnimationEnd, setHeaderAnimationEnd] =
     useAtom(bootAnimationAtom);
   const result = useFamilyData();
-  const { isWeddingStarted, isPartyStarted, isWeddingOver } = useWedding();
+  const { isWeddingOver, showAtHome, showRSVP, showHotel, showGuestbook } = useWedding();
   const [elapsed, setElapsed] = React.useState(false);
 
   const needToRefresh = useNeedToRefresh();
@@ -123,20 +123,19 @@ const App = () => {
           animate={{ opacity: 1, transition: { duration: 1, delay: 0.5 } }}
         >
           <WeAreWedding />
-          {isPartyStarted && <GallerySection />}
-          {!isPartyStarted && <AtHome />}
+          {showAtHome && <AtHome />}
           {/* <WhenSection /> */}
           <WhereSection onlyInfo={result.data.onlyInfo} />
-          {!result.data.onlyInfo && !isWeddingStarted && (
+          {!result.data.onlyInfo && (
             <>
-              <RSVPSection familyData={result.data} />
-              <HotelSection />
+              {showRSVP && <RSVPSection familyData={result.data} />}
+              {showHotel && <HotelSection />}
             </>
           )}
           <GiftSection />
-          {!isWeddingOver && <GuestbookSection />}
+          {showGuestbook && <GuestbookSection />}
           <PhotoSharingSection />
-          {!isPartyStarted && <GallerySection />}
+          <GallerySection />
         </motion.div>
       )}
     </Container>

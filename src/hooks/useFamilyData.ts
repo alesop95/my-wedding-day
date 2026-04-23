@@ -4,7 +4,7 @@ import { db, firebaseApp } from "../App";
 import { dummyData, FamilyData, setDummyData } from "../types/family";
 import { isDev } from "../utils/env";
 import { getAuth, signInAnonymously } from "firebase/auth";
-import { useWedding } from "./useWedding";
+import { useWeddingTime } from "./useWeddingTime";
 
 type FamilyDataError = {
   kind: "error";
@@ -20,7 +20,7 @@ export const useFamilyData = () => {
   const [data, setData] = useState<
     FamilyDataSuccess | FamilyDataError | undefined
   >();
-  const wedding = useWedding();
+  const wedding = useWeddingTime();
 
   useEffect(() => {
     const url = new URL(window.location.href).pathname.replace("/", "");
@@ -60,7 +60,7 @@ export const useFamilyData = () => {
 
 export const useUpdateFamilyData = (familyId: string) => {
   const docRef = doc(db, "wedding", familyId);
-  const { isWeddingStarted } = useWedding();
+  const { isWeddingStarted } = useWeddingTime();
   return useCallback(
     async (familyData: FamilyData) => {
       if (isWeddingStarted) {
@@ -77,7 +77,7 @@ export const useUpdateFamilyData = (familyId: string) => {
 };
 
 export const useUpdateFamilyDataEnhanced = () => {
-  const { isWeddingStarted } = useWedding();
+  const { isWeddingStarted } = useWeddingTime();
   return useCallback(
     (familyId: string) => async (familyData: FamilyData) => {
       if (isWeddingStarted) {

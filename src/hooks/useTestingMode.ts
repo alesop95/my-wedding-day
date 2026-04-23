@@ -1,11 +1,31 @@
 import { useMemo } from "react";
 import { isDev } from "../utils/env";
 
+/**
+ * Layer 2 — Testing Mode: override di visibilità per sezioni condizionali.
+ *
+ * Attivabile via:
+ *   - Query parameter: `?testing=true`
+ *   - LocalStorage: `wedding-testing-mode=true`
+ *   - Environment variable (solo dev): `REACT_APP_TESTING_MODE=true`
+ *
+ * In testing mode, TUTTI i flag `forceXVisible` sono `true`: questo mostra
+ * tutte le sezioni condizionali indipendentemente dallo stato temporale
+ * reale, senza alterare la business logic (che legge da `useWeddingTime`).
+ *
+ * I flag sono granulari per consentire, in futuro, override mirati
+ * (es. testare solo una sezione via query param dedicato).
+ */
 export type TestingModeConfig = {
   isTestingMode: boolean;
-  forcePartyStarted: boolean;
-  forcePhotoSharingVisible: boolean;
   source: 'query' | 'localStorage' | 'env' | 'disabled';
+
+  // Override di visibilità per sezioni condizionali in App.tsx
+  forceAtHomeVisible: boolean;
+  forceRSVPVisible: boolean;
+  forceHotelVisible: boolean;
+  forceGuestbookVisible: boolean;
+  forcePhotoSharingVisible: boolean;
 };
 
 export const useTestingMode = (): TestingModeConfig => {
@@ -42,9 +62,13 @@ export const useTestingMode = (): TestingModeConfig => {
 
     return {
       isTestingMode,
-      forcePartyStarted: isTestingMode, // In testing, force party started
-      forcePhotoSharingVisible: isTestingMode, // In testing, force photo sharing visible
-      source
+      source,
+      // Master switch: quando testing mode è attivo, tutti i flag sono true
+      forceAtHomeVisible: isTestingMode,
+      forceRSVPVisible: isTestingMode,
+      forceHotelVisible: isTestingMode,
+      forceGuestbookVisible: isTestingMode,
+      forcePhotoSharingVisible: isTestingMode
     };
   }, []);
 };
