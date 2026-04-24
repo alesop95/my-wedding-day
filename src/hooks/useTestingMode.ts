@@ -26,6 +26,7 @@ export type TestingModeConfig = {
   forceHotelVisible: boolean;
   forceGuestbookVisible: boolean;
   forcePhotoSharingVisible: boolean;
+  forcePlaylistVisible: boolean;
 };
 
 export const useTestingMode = (): TestingModeConfig => {
@@ -68,7 +69,8 @@ export const useTestingMode = (): TestingModeConfig => {
       forceRSVPVisible: isTestingMode,
       forceHotelVisible: isTestingMode,
       forceGuestbookVisible: isTestingMode,
-      forcePhotoSharingVisible: isTestingMode
+      forcePhotoSharingVisible: isTestingMode,
+      forcePlaylistVisible: isTestingMode
     };
   }, []);
 };

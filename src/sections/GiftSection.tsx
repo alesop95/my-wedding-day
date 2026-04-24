@@ -23,6 +23,7 @@ import ConfettiExplosion from "react-confetti-explosion";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import aroundTheWorldAnimation from "../animation/128-around-the-world.json";
 import japanAnimation from "../animation/japan.json";
+//import japanAnimation from "../animation/korea_final.json";
 
 type BankDetailProps = {
   header: string;

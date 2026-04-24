@@ -109,6 +109,16 @@
       "tip": "You can upload photos and videos directly to the shared folder",
       "loadError": "Error loading photo configuration"
     },
+    "playlist": {
+      "title": "Our playlist",
+      "subtitle": "Which song can't be missed?",
+      "description": "Listen to our shared playlist and add the songs you'd love to hear at the party!",
+      "instruction": "🎵 Scan to listen",
+      "howTo": "Open your smartphone camera and point it at the QR code, or open Spotify with the button below",
+      "openSpotify": "Open in Spotify",
+      "tip": "💿 Suggest your favourite tracks: we'll dance to them together!",
+      "loadError": "Error loading playlist configuration"
+    },
     "dashboard": {
       "title": "RSVP Dashboard",
       "loadError": "Error loading dashboard",

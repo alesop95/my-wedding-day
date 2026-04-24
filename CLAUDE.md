@@ -228,6 +228,7 @@ export type FamilyData = {
 | `tables` | Configurazione tavoli ristorante | Lettura/Scrittura: admin ristorante |
 | `guestbook` | Messaggi ospiti con real-time sync | Lettura: pubblico. Scrittura: utenti autenticati. Moderazione: admin |
 | `config/photoSharing` | Configurazione condivisione foto | Lettura: pubblico. Scrittura: solo admin console |
+| `config/playlist` | Configurazione playlist Spotify | Lettura: pubblico. Scrittura: solo admin console |
 
 ### GuestbookEntry
 
@@ -252,6 +253,21 @@ export type PhotoSharingConfig = {
 
 export type PhotoSharingState = {
   config: O.Option<PhotoSharingConfig>;
+  loading: boolean;
+  error: O.Option<string>;
+};
+```
+
+### PlaylistConfig
+
+```typescript
+export type PlaylistConfig = {
+  spotifyUrl: string;
+  enabled: boolean;
+};
+
+export type PlaylistState = {
+  config: O.Option<PlaylistConfig>;
   loading: boolean;
   error: O.Option<string>;
 };
@@ -394,6 +410,70 @@ export type PhotoSharingState = {
 - 🔧 "Invalid time value" crash fix su date parsing
 - 🔧 Testing mode override completo per visibilità
 - 🔧 Posizionamento componente dopo GiftSection
+
+### ✅ Refactor 3-Layer Testing Mode (COMPLETATO)
+
+**Status:** Implementato e testato ✅
+**Data completamento:** 2026-04-23
+**Motivazione:** Separare lo stato temporale reale (business logic) dagli override di visibilità UI (testing mode). Risolto bug silenzioso dove `forcePartyStarted` in testing mode faceva scattare il guardrail `isWeddingStarted` in `useFamilyData`, bloccando gli update RSVP.
+
+**File creati:**
+- `src/hooks/useWeddingTime.ts` — Layer 1, tempo reale puro (no override)
+
+**File modificati:**
+- `src/hooks/useTestingMode.ts` — Rimosso `forcePartyStarted`. Aggiunti 5 flag granulari (`forceAtHomeVisible`, `forceRSVPVisible`, `forceHotelVisible`, `forceGuestbookVisible`, `forcePhotoSharingVisible`).
+- `src/hooks/useWedding.ts` — Diventa composition layer (Layer 3). Espone flag `show*` per App.tsx.
+- `src/hooks/useFamilyData.ts` — Usa `useWeddingTime` (Layer 1) per guardrail RSVP.
+- `src/utils/constants.ts` — Aggiunte `partyStartDate`, `weddingEndDate` come Single Source of Truth.
+- `src/utils/date.ts` — Importa `weddingDate` da constants (rimossa duplicazione).
+- `src/App.tsx` — Usa flag `show*`, rimossa GallerySection duplicata (Opzione A: GallerySection sempre visibile in fondo).
+
+**Principi applicati:**
+- ✅ Single Responsibility per ogni hook
+- ✅ Single Source of Truth per le date (solo `constants.ts`)
+- ✅ Business logic disaccoppiata da testing override
+- ✅ Flag granulari per testing mirato su singole sezioni
+
+### ✅ Feature 5 — Spotify Playlist Condivisa (COMPLETATA)
+
+**Status:** Implementata e testata ✅
+**Data completamento:** 2026-04-24
+**File implementati:**
+- `src/types/playlist.ts` — Tipi `PlaylistConfig` e `PlaylistState`
+- `src/hooks/usePlaylist.ts` — Hook Firebase `config/playlist` con testing override
+- `src/hooks/__tests__/usePlaylist.test.ts` — 7 test (stato iniziale, config valida/disabled/missing/invalida, errore Firestore, testing override con admin disabled)
+- `src/sections/PlaylistSection.tsx` — UI con embed Spotify iframe + QR code + pulsante apri Spotify
+- Collection Firestore: `config/playlist`
+
+**File modificati:**
+- `src/hooks/useTestingMode.ts` — Aggiunto flag `forcePlaylistVisible`
+- `src/App.tsx` — Import + posizionamento tra `GuestbookSection` e `PhotoSharingSection`
+- `src/i18n/locales/it.json` + `en.json` — Nuova sezione `playlist` (title, subtitle, description, instruction, howTo, openSpotify, tip, loadError)
+
+**Funzionalità:**
+- ✅ Embed Spotify iframe (conversione automatica URL playlist → URL embed)
+- ✅ QR code al link Spotify (`qrcode.react`, già installato da Feature 4)
+- ✅ Pulsante fallback per apertura diretta Spotify
+- ✅ Pattern coerente con Feature 4 (PhotoSharing): `enabled` + testing mode override
+- ✅ Traduzioni complete IT/EN
+- ✅ Animazioni Framer Motion (embed, QR, button)
+- ✅ 7/7 test passanti (mock Firestore + useTestingMode)
+
+**Configurazione Firestore:**
+```javascript
+// Collection: config, Document: playlist
+{
+  enabled: true,
+  spotifyUrl: "https://open.spotify.com/playlist/XXXXXXXXXXXXXXXXXXXXXX"
+}
+```
+
+**Architettura Testing Mode:**
+`forcePlaylistVisible` bypassa future logiche temporali (placeholder per estensione `visibleFrom` se servirà). Rispetta la regola architetturale del refactor 3-Layer: il testing mode NON bypassa la scelta admin (`enabled=false` resta nascosto — verificato dal test).
+
+**Dipendenze:** nessuna nuova (`qrcode.react` condiviso con Feature 4).
+
+**Nessuna regola di sicurezza Firestore aggiuntiva** — la collection `config` è già coperta dalle regole template (`allow read: if true; allow write: if false`).
 
 ---
 

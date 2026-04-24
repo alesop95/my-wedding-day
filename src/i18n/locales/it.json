@@ -109,6 +109,16 @@
       "tip": "Potrai caricare foto e video direttamente nella cartella condivisa",
       "loadError": "Errore nel caricamento della configurazione foto"
     },
+    "playlist": {
+      "title": "La nostra playlist",
+      "subtitle": "Che canzone non può mancare?",
+      "description": "Ascolta la nostra playlist condivisa e aggiungi i brani che vorresti sentire alla festa!",
+      "instruction": "🎵 Scansiona per ascoltare",
+      "howTo": "Apri la fotocamera del tuo smartphone e inquadra il codice QR, oppure apri Spotify con il pulsante qui sotto",
+      "openSpotify": "Apri su Spotify",
+      "tip": "💿 Suggerisci i tuoi brani preferiti: li balleremo insieme!",
+      "loadError": "Errore nel caricamento della configurazione playlist"
+    },
     "dashboard": {
       "title": "Dashboard RSVP",
       "loadError": "Errore nel caricamento della dashboard",
