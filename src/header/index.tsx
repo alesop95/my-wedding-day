@@ -111,7 +111,7 @@ const Header: React.FC<Props> = ({ onAnimationComplete }) => {
       >
         <motion.div animate={animationShake} style={{ zIndex: 10003 }}>
           <motion.div animate={animation}>
-            <AnimatedCharacter side={"left"} src={"/header/mario.svg"} />
+            <AnimatedCharacter side={"left"} src={"/header/alessio.svg"} />
           </motion.div>
         </motion.div>
       </Stack>
@@ -120,7 +120,7 @@ const Header: React.FC<Props> = ({ onAnimationComplete }) => {
           flex: 1
         }}
       >
-        <AnimatedCharacter side={"right"} src={"/header/giulia.svg"} />
+        <AnimatedCharacter side={"right"} src={"/header/beatrice.svg"} />
       </Stack>
 
       <WeddingRings onAnimationComplete={onAnimationComplete} />

@@ -29,8 +29,8 @@ export const AtHome: React.FC<AtHomeProps> = () => {
           <Stack spacing={2}>
             <Stack direction={"row"} alignItems={"center"} spacing={2}>
               <img
-                src={"../header/mario.svg"}
-                alt={t("header.avatarMario")}
+                src={"../header/alessio.svg"}
+                alt={t("header.avatarAlessio")}
                 style={{ width: 48 }}
               />
               <Typography fontSize={16} textAlign={"left"}>
@@ -51,8 +51,8 @@ export const AtHome: React.FC<AtHomeProps> = () => {
             </Stack>
             <Stack direction={"row"} alignItems={"center"} spacing={2}>
               <img
-                src={"../header/giulia.svg"}
-                alt={t("header.avatarGiulia")}
+                src={"../header/beatrice.svg"}
+                alt={t("header.avatarBeatrice")}
                 style={{ width: 48 }}
               />
               <Typography fontSize={16} textAlign={"left"}>

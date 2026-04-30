@@ -37,13 +37,13 @@ export const useContactsConfig = (): UseContactsConfigResult => {
               name: "Beatrice",
               number: "+393331983242",
               message: "",
-              image: "./header/giulia.svg"
+              image: "./header/beatrice.svg"
             },
             {
               name: "Alessio",
               number: "+393201950043",
               message: "",
-              image: "./header/mario.svg"
+              image: "./header/alessio.svg"
             }
           ]);
         }
@@ -57,13 +57,13 @@ export const useContactsConfig = (): UseContactsConfigResult => {
             name: "Beatrice",
             number: "+393331983242",
             message: "",
-            image: "./header/giulia.svg"
+            image: "./header/beatrice.svg"
           },
           {
             name: "Alessio",
             number: "+393201950043",
             message: "",
-            image: "./header/mario.svg"
+            image: "./header/alessio.svg"
           }
         ]);
       } finally {
