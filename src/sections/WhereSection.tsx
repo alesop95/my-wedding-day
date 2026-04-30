@@ -46,7 +46,7 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
           </Typography>
           <a
             rel="noreferrer"
-            href={"https://example.com/maps/location-cerimonia-a"}
+            href={"https://maps.app.goo.gl/apPEZMHkUCJc8yyP7"}
             target={"_blank"}
             style={{
               textDecoration: "underline",
@@ -100,7 +100,7 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
               </Typography>
               <a
                 rel="noreferrer"
-                href={"https://example.com/maps/location-ricevimento-b"}
+                href={"https://maps.app.goo.gl/MW3uhzN3Vj7seb3RA"}
                 target={"_blank"}
                 style={{
                   textDecoration: "underline",

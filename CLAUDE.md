@@ -10,6 +10,7 @@
 **Nome:** my-wedding-day
 **Tipo:** SPA React 18 + TypeScript, serverless
 **Scopo:** Wedding planner interattivo per il matrimonio di Alessio & Beatrice, 24 Luglio 2027
+**Location:** Civitanova Marche (MC), Italia
 **Deploy target:** Firebase Hosting (CDN statico, zero backend Node)
 
 ---

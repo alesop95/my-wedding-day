@@ -11,9 +11,9 @@
       "title": "Before the ceremony",
       "church": "church",
       "description": "If you'd like to meet us before the ceremony to have a drink together and chat, you're welcome!",
-      "timeFrom": "from 4pm -",
-      "meetingPointA": "Meeting point A, Example City",
-      "meetingPointB": "Meeting point B, Example City"
+      "timeFrom": "from 3:00 PM -",
+      "meetingPointA": "Via Aurora, 59, 62012 Civitanova Alta MC",
+      "meetingPointB": "Via Aurora, 57, 62012 Civitanova Alta MC"
     },
     "rsvp": {
       "title": "Your presence",
@@ -42,14 +42,14 @@
       "map": "map",
       "time": "5:30 PM",
       "date": "July 24th",
-      "ceremonyLocation": "Ceremony Location A",
-      "receptionLocation": "Reception Location B",
+      "ceremonyLocation": "Piazza della Libertà, 62012 Civitanova Marche MC - Chiesa Parrocchiale di San Paolo Apostolo",
+      "receptionLocation": "Via Cavallino, 86, 62012 Civitanova Marche MC - Villa Gazzani",
       "receptionText": "after the ceremony we'll be delighted to celebrate together at",
-      "ceremonyDescription": "5:30 PM - Ceremony at Ceremony Location A",
-      "fullDescription": "5:30 PM - Ceremony at Ceremony Location A. Followed by reception at Reception Location B",
+      "ceremonyDescription": "5:30 PM - Ceremony at Piazza della Libertà, 62012 Civitanova Marche MC - Chiesa Parrocchiale di San Paolo Apostolo",
+      "fullDescription": "5:30 PM - Ceremony at Piazza della Libertà, 62012 Civitanova Marche MC - Chiesa Parrocchiale di San Paolo Apostolo. Followed by reception at Via Cavallino, 86, 62012 Civitanova Marche MC - Villa Gazzani",
       "calendarName": "Alessio & Beatrice Wedding",
       "calendarLabel": "add to calendar",
-      "calendarLocation": "Ceremony Location A, Example City, Italy"
+      "calendarLocation": "Piazza della Libertà, 62012 Civitanova Marche MC, Italy"
     },
     "gift": {
       "title": "Wedding Gift List",

@@ -11,9 +11,9 @@
       "title": "Prima della cerimonia",
       "church": "chiesa",
       "description": "Se hai piacere di incontrarci prima della cerimonia per bere una cosa insieme e scambiare 4 chiacchere, sei il benvenuto/a!",
-      "timeFrom": "dalle 16h -",
-      "meetingPointA": "Punto di incontro A, Citta Esempio",
-      "meetingPointB": "Punto di incontro B, Citta Esempio"
+      "timeFrom": "dalle 15:00 -",
+      "meetingPointA": "Via Aurora, 59, 62012 Civitanova Alta MC",
+      "meetingPointB": "Via Aurora, 57, 62012 Civitanova Alta MC"
     },
     "rsvp": {
       "title": "La tua presenza",
@@ -42,14 +42,14 @@
       "map": "map",
       "time": "ore 17:30",
       "date": "24 Luglio",
-      "ceremonyLocation": "location cerimonia A",
-      "receptionLocation": "location ricevimento B",
+      "ceremonyLocation": "Piazza della Libertà, 62012 Civitanova Marche MC - Chiesa Parrocchiale di San Paolo Apostolo",
+      "receptionLocation": "Via Cavallino, 86, 62012 Civitanova Marche MC - Villa Gazzani",
       "receptionText": "dopo la cerimonia saremo lieti di festeggiare insieme presso",
-      "ceremonyDescription": "h17.30 - Cerimonia presso Location Cerimonia A",
-      "fullDescription": "h17.30 - Cerimonia presso Location Cerimonia A. A seguire, ricevimento presso Location Ricevimento B",
+      "ceremonyDescription": "h17.30 - Cerimonia presso Piazza della Libertà, 62012 Civitanova Marche MC - Chiesa Parrocchiale di San Paolo Apostolo",
+      "fullDescription": "h17.30 - Cerimonia presso Piazza della Libertà, 62012 Civitanova Marche MC - Chiesa Parrocchiale di San Paolo Apostolo. A seguire, ricevimento presso Via Cavallino, 86, 62012 Civitanova Marche MC - Villa Gazzani",
       "calendarName": "Matrimonio Alessio & Beatrice",
       "calendarLabel": "aggiungi al calendario",
-      "calendarLocation": "Location Cerimonia A, Citta Esempio, Italia"
+      "calendarLocation": "Piazza della Libertà, 62012 Civitanova Marche MC, Italia"
     },
     "gift": {
       "title": "Lista nozze",

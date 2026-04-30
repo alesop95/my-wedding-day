@@ -37,7 +37,7 @@ export const AtHome: React.FC<AtHomeProps> = () => {
                 {t("sections.athome.timeFrom")}{" "}
                 <a
                   rel="noreferrer"
-                  href={"https://example.com/maps/meeting-point-a"}
+                  href={"https://maps.app.goo.gl/AKpXN4mCpm6SEYQB8"}
                   target={"_blank"}
                   style={{
                     textDecoration: "underline",
@@ -59,7 +59,7 @@ export const AtHome: React.FC<AtHomeProps> = () => {
                 {t("sections.athome.timeFrom")}{" "}
                 <a
                   rel="noreferrer"
-                  href={"https://example.com/maps/meeting-point-b"}
+                  href={"https://maps.app.goo.gl/BSnNZWyf3iqAoeYE7"}
                   target={"_blank"}
                   style={{
                     textDecoration: "underline",
