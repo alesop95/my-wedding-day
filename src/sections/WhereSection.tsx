@@ -160,7 +160,8 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
             label={t("sections.where.calendarLabel")}
             language={i18n.language as "it" | "en"}
             dates={dates}
-            options={["Google", "Apple", "Yahoo", "Outlook.com"]}
+            options={["Google", "Apple", "Yahoo", "Outlook.com", "iCal"]}
+            listStyle={"modal"}
           />
         </Box>
       </Box>
