@@ -117,7 +117,24 @@
       "howTo": "Open your smartphone camera and point it at the QR code, or open Spotify with the button below",
       "openSpotify": "Open in Spotify",
       "tip": "💿 Suggest your favourite tracks: we'll dance to them together!",
-      "loadError": "Error loading playlist configuration"
+      "loadError": "Error loading playlist configuration",
+      "unexpectedError": "Unexpected error while sending",
+      "suggestions": {
+        "formTitle": "💿 Suggest a track",
+        "formSubtitle": "We'll dance to it together! Leave a heartfelt suggestion here.",
+        "titleLabel": "Song title",
+        "artistLabel": "Artist",
+        "authorLabel": "Your name",
+        "noteLabel": "Anecdote or dedication (optional)",
+        "submit": "Send suggestion",
+        "sending": "Sending...",
+        "successToast": "Suggestion sent, thank you! 🎶",
+        "loginRequired": "To suggest a song, please access via your family's personalised link.",
+        "listTitle_one": "{{count}} suggestion so far",
+        "listTitle_other": "{{count}} suggestions so far",
+        "listTitle": "{{count}} suggestions so far",
+        "emptyList": "No suggestions yet... be the first to suggest a song!"
+      }
     },
     "dashboard": {
       "title": "RSVP Dashboard",

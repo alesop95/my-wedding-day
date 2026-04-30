@@ -117,7 +117,24 @@
       "howTo": "Apri la fotocamera del tuo smartphone e inquadra il codice QR, oppure apri Spotify con il pulsante qui sotto",
       "openSpotify": "Apri su Spotify",
       "tip": "💿 Suggerisci i tuoi brani preferiti: li balleremo insieme!",
-      "loadError": "Errore nel caricamento della configurazione playlist"
+      "loadError": "Errore nel caricamento della configurazione playlist",
+      "unexpectedError": "Errore inaspettato durante l'invio",
+      "suggestions": {
+        "formTitle": "💿 Suggerisci un brano",
+        "formSubtitle": "Li balleremo insieme! Lascia qui il tuo suggerimento affettivo.",
+        "titleLabel": "Titolo del brano",
+        "artistLabel": "Artista",
+        "authorLabel": "Il tuo nome",
+        "noteLabel": "Aneddoto o dedica (opzionale)",
+        "submit": "Invia suggerimento",
+        "sending": "Invio in corso...",
+        "successToast": "Suggerimento inviato, grazie! 🎶",
+        "loginRequired": "Per suggerire un brano accedi tramite il link personalizzato della tua famiglia.",
+        "listTitle_one": "{{count}} suggerimento finora",
+        "listTitle_other": "{{count}} suggerimenti finora",
+        "listTitle": "{{count}} suggerimenti finora",
+        "emptyList": "Nessun suggerimento ancora... sii il primo a consigliarci un brano!"
+      }
     },
     "dashboard": {
       "title": "Dashboard RSVP",

@@ -23,6 +23,7 @@ import { AddFamily } from "./AddFamily";
 import { FamilyData } from "../types/family";
 import { Report } from "./Report";
 import { GuestbookModeration } from "./GuestbookModeration";
+import { SongSuggestionsModeration } from "./SongSuggestionsModeration";
 import { DashboardSection } from "../sections/DashboardSection";
 
 export const themeOptions: ThemeOptions = {
@@ -155,7 +156,8 @@ export const Admin = () => {
             <Tab label="Dashboard" {...a11yProps(0)} />
             <Tab label="Gestione Famiglie" {...a11yProps(1)} />
             <Tab label="Moderazione Guestbook" {...a11yProps(2)} />
-            <Tab label="Report" {...a11yProps(3)} />
+            <Tab label="Suggerimenti Brani" {...a11yProps(3)} />
+            <Tab label="Report" {...a11yProps(4)} />
           </Tabs>
         </Box>
 
@@ -202,6 +204,11 @@ export const Admin = () => {
         </TabPanel>
 
         <TabPanel value={tabValue} index={3}>
+          {/* Song Suggestions Moderation Tab */}
+          <SongSuggestionsModeration />
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={4}>
           {/* Report Tab */}
           <Box display="flex" flexDirection="column" alignItems="center">
             <Report data={familyData} />

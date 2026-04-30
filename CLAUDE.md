@@ -229,6 +229,7 @@ export type FamilyData = {
 | `guestbook` | Messaggi ospiti con real-time sync | Lettura: pubblico. Scrittura: utenti autenticati. Moderazione: admin |
 | `config/photoSharing` | Configurazione condivisione foto | Lettura: pubblico. Scrittura: solo admin console |
 | `config/playlist` | Configurazione playlist Spotify | Lettura: pubblico. Scrittura: solo admin console |
+| `songSuggestions` | Suggerimenti brani degli ospiti (mini-guestbook playlist) | Lettura: pubblico. Scrittura: utenti autenticati con validazione lunghezza. Delete: solo admin |
 
 ### GuestbookEntry
 
@@ -271,6 +272,20 @@ export type PlaylistState = {
   loading: boolean;
   error: O.Option<string>;
 };
+```
+
+### SongSuggestion
+
+```typescript
+export interface SongSuggestion {
+  id: string;
+  familyId: string;
+  authorName: string;
+  songTitle: string;
+  artist: string;
+  note?: string;      // aneddoto/dedica opzionale
+  createdAt: Date;
+}
 ```
 
 ---
@@ -473,7 +488,56 @@ export type PlaylistState = {
 
 **Dipendenze:** nessuna nuova (`qrcode.react` condiviso con Feature 4).
 
-**Nessuna regola di sicurezza Firestore aggiuntiva** — la collection `config` è già coperta dalle regole template (`allow read: if true; allow write: if false`).
+**Nessuna regola di sicurezza Firestore aggiuntiva** per `config/playlist` — la collection `config` è già coperta dalle regole template (`allow read: if true; allow write: if false`).
+
+#### Sotto-modulo: Song Suggestions (mini-guestbook playlist)
+
+**Status:** Implementato e testato ✅
+**Data completamento:** 2026-04-24
+
+Estensione di Feature 5 che permette agli ospiti di suggerire brani come "tracce affettive", integrato nella stessa PlaylistSection. Pattern architetturale identico al Guestbook originale (`useGuestbook` / `useGuestbookAdmin`).
+
+**File implementati:**
+- `src/types/songSuggestion.ts` — tipo `SongSuggestion`
+- `src/hooks/useSongSuggestions.ts` — real-time `onSnapshot` + `addSuggestion` (fp-ts TaskEither) + export `SONG_SUGGESTION_LIMITS`
+- `src/hooks/useSongSuggestionsAdmin.ts` — composition con `deleteSuggestion`
+- `src/hooks/__tests__/useSongSuggestions.test.ts` — 11 test (stato iniziale, snapshot, validazioni 4 campi, canSend, write Firestore con/senza note, errori, family missing)
+- `src/admin/SongSuggestionsModeration.tsx` — tabella + dialog conferma delete
+
+**File modificati:**
+- `src/sections/PlaylistSection.tsx` — sostituito box statico "💿 Suggerisci..." con form 4 campi (songTitle, artist, authorName, note opzionale) + lista scrollabile dei suggerimenti + Snackbar verde per conferma silenziosa
+- `src/admin/Admin.tsx` — aggiunto tab "Suggerimenti Brani" (indice 3, Report shifta a 4)
+- `src/i18n/locales/{it,en}.json` — nuova sezione `playlist.suggestions` con 12 chiavi
+
+**Collection Firestore:** `songSuggestions`
+```javascript
+{
+  familyId: string,        // traccia chi ha suggerito
+  authorName: string,      // required, max 50 char
+  songTitle: string,       // required, max 100 char
+  artist: string,          // required, max 100 char
+  note?: string,           // opzionale, max 300 char
+  createdAt: Timestamp     // serverTimestamp()
+}
+```
+
+**Regole sicurezza Firestore (da aggiungere):**
+```javascript
+match /songSuggestions/{id} {
+  allow read: if true;
+  allow create: if request.auth != null
+    && request.resource.data.songTitle.size() <= 100
+    && request.resource.data.artist.size() <= 100
+    && request.resource.data.authorName.size() <= 50;
+  allow delete: if false;  // solo da admin console Firebase
+}
+```
+
+**UX:**
+- Ordine cronologico inverso (più recenti in cima)
+- Nessuna paginazione: lista scrollabile con `maxHeight: 480px` + `overflowY: auto`
+- Time-ago i18n riutilizzato da Guestbook (pattern `timeAgo.*`)
+- Moderazione admin via dialog di conferma con anteprima del suggerimento
 
 ---
 
