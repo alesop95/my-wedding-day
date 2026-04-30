@@ -10,16 +10,24 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
 
   const dates = [
     {
-      name: t("where.calendarName"),
+      name: t("sections.where.calendarCeremonyName"),
       startDate: "2027-07-24",
       startTime: "17:30",
       endTime: "18:30",
       endDate: "2027-07-24",
       timeZone: "Europe/Rome",
-      description: onlyInfo
-        ? t("sections.where.ceremonyDescription")
-        : t("sections.where.fullDescription"),
+      description: t("sections.where.ceremonyDescription"),
       location: t("sections.where.calendarLocation")
+    },
+    {
+      name: t("sections.where.calendarReceptionName"),
+      startDate: "2027-07-24",
+      startTime: "19:00",
+      endTime: "01:00",
+      endDate: "2027-07-25",
+      timeZone: "Europe/Rome",
+      description: t("sections.where.receptionDescription"),
+      location: t("sections.where.calendarReceptionLocation")
     }
   ];
   return (

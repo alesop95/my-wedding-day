@@ -46,9 +46,13 @@
       "receptionLocation": "Via Cavallino, 86, 62012 Civitanova Marche MC - Villa Gazzani",
       "receptionText": "after the ceremony we'll be delighted to celebrate together at",
       "ceremonyDescription": "5:30 PM - Ceremony at Piazza della Libertà, 62012 Civitanova Marche MC - Chiesa Parrocchiale di San Paolo Apostolo",
+      "receptionDescription": "7:00 PM - Reception at Via Cavallino, 86, 62012 Civitanova Marche MC - Villa Gazzani",
       "fullDescription": "5:30 PM - Ceremony at Piazza della Libertà, 62012 Civitanova Marche MC - Chiesa Parrocchiale di San Paolo Apostolo. Followed by reception at Via Cavallino, 86, 62012 Civitanova Marche MC - Villa Gazzani",
       "calendarName": "Alessio & Beatrice Wedding",
+      "calendarCeremonyName": "Ceremony - Alessio & Beatrice",
+      "calendarReceptionName": "Reception - Alessio & Beatrice",
       "calendarLabel": "add to calendar",
+      "calendarReceptionLocation": "Via Cavallino, 86, 62012 Civitanova Marche MC, Italy",
       "calendarLocation": "Piazza della Libertà, 62012 Civitanova Marche MC, Italy"
     },
     "gift": {
