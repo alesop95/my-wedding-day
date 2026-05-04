@@ -13,13 +13,6 @@ export const useAdmin = (): boolean => {
       return;
     }
     const password = url.searchParams.get("password");
-
-    // TEMPORARY: bypass Firestore check for development
-    if (password === "admin123") {
-      setAdmin(true);
-      return;
-    }
-
     const q = query(collection(db, "admin"), where("password", "==", password));
     getDocs(q)
       .then(documentSnapshot => setAdmin(documentSnapshot.size > 0))

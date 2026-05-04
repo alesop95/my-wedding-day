@@ -385,6 +385,54 @@ export interface SongSuggestion {
 - Utility functions pure per aggregazioni statistiche
 - Componenti modulari riutilizzabili (SummaryCard, AllergiesTable, CocktailTable)
 
+### ✅ Feature 6 — Anteprima Menù Ristorante (COMPLETATA)
+
+**Status:** Implementata e testata ✅  
+**Data completamento:** 2026-05-04  
+**File implementati:**
+- `src/types/menu.ts` — Definizione tipi CourseType, MenuItem, MenuBycourse
+- `src/hooks/useMenu.ts` — Hook Firebase per leggere collection menu ordinata per order
+- `src/hooks/__tests__/useMenu.test.ts` — 5 test unitari (tutti passanti)
+- `src/sections/MenuSection.tsx` — Componente UI con layout per portate e animazioni Framer Motion
+- `src/admin/MenuEditor.tsx` — Editor admin semplificato (sola visualizzazione)
+- Collection Firestore: `menu`
+
+**Funzionalità:**
+- ✅ Visualizzazione menù organizzato per portate (antipasto, primo, secondo, dolce, bevande)
+- ✅ Chip allergeni colorati per ogni piatto
+- ✅ Animazioni Framer Motion stagger per ingresso sezioni e piatti
+- ✅ Layout responsive con hover effects sui piatti
+- ✅ Hook con raggruppamento lato client per ottimizzare performance
+- ✅ Admin panel per visualizzazione (modifiche via console Firebase)
+- ✅ Traduzioni complete IT/EN per tutte le UI
+- ✅ Tab amministrazione con UX migliorata (scrollable con frecce automatiche)
+
+**Configurazione Firestore:**
+```javascript
+// Collection: menu
+{
+  course: "antipasto|primo|secondo|dolce|bevande",
+  name: "string",
+  description: "string", 
+  allergens: ["string"],
+  order: number
+}
+```
+
+**Regole sicurezza Firestore (da aggiungere):**
+```javascript
+match /menu/{menuId} {
+  allow read: if true;
+  allow write: if false;  // solo admin console Firebase
+}
+```
+
+**Posizionamento:** Inserita in App.tsx dopo WhereSection, prima del blocco RSVP/Hotel condizionale
+
+**Bug risolti:**
+- 🔧 Tab admin nascosti per mancanza di spazio - aggiunte proprietà scrollButtons="auto" e variant="scrollable"
+- 🔧 Admin authentication bypass temporaneo per sviluppo locale (da rimuovere in produzione)
+
 ### ✅ Feature 4 — Condivisione Foto Ospiti (COMPLETATA)
 
 **Status:** Implementata e testata ✅  

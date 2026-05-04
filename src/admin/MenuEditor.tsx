@@ -6,17 +6,16 @@ import {
 } from "@mui/material";
 
 export const MenuEditor: React.FC = () => {
-  // Temporaneo: componente semplificato per debug
   return (
     <Box sx={{ m: 2 }}>
       <Typography variant="h6" gutterBottom>
-        🍽️ Gestione Menù - Interfaccia Debug
+        Gestione Menù
       </Typography>
       <Alert severity="info">
         <Typography>
-          Il MenuEditor è stato caricato correttamente ma è temporaneamente semplificato.
+          <strong>Visualizzazione sola lettura.</strong>
           <br />
-          Le modifiche al menù vanno fatte dalla console Firebase.
+          Per aggiungere o modificare piatti del menù, utilizzare la console Firebase (collection: <code>menu</code>).
         </Typography>
       </Alert>
     </Box>

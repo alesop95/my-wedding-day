@@ -153,12 +153,19 @@ export const Admin = () => {
 
         {/* Tabs */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={tabValue} onChange={handleTabChange} aria-label="admin tabs">
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            aria-label="admin tabs"
+            variant="scrollable"
+            scrollButtons="auto"
+            allowScrollButtonsMobile
+          >
             <Tab label="Dashboard" {...a11yProps(0)} />
             <Tab label="Gestione Famiglie" {...a11yProps(1)} />
             <Tab label="Moderazione Guestbook" {...a11yProps(2)} />
             <Tab label="Suggerimenti Brani" {...a11yProps(3)} />
-            <Tab label="🍽️ MENÙ" {...a11yProps(4)} />
+            <Tab label="Gestione Menù" {...a11yProps(4)} />
             <Tab label="Report" {...a11yProps(5)} />
           </Tabs>
         </Box>
