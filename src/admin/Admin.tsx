@@ -25,6 +25,7 @@ import { Report } from "./Report";
 import { GuestbookModeration } from "./GuestbookModeration";
 import { SongSuggestionsModeration } from "./SongSuggestionsModeration";
 import { DashboardSection } from "../sections/DashboardSection";
+import { MenuEditor } from "./MenuEditor";
 
 export const themeOptions: ThemeOptions = {
   palette: {
@@ -157,7 +158,8 @@ export const Admin = () => {
             <Tab label="Gestione Famiglie" {...a11yProps(1)} />
             <Tab label="Moderazione Guestbook" {...a11yProps(2)} />
             <Tab label="Suggerimenti Brani" {...a11yProps(3)} />
-            <Tab label="Report" {...a11yProps(4)} />
+            <Tab label="🍽️ MENÙ" {...a11yProps(4)} />
+            <Tab label="Report" {...a11yProps(5)} />
           </Tabs>
         </Box>
 
@@ -209,6 +211,11 @@ export const Admin = () => {
         </TabPanel>
 
         <TabPanel value={tabValue} index={4}>
+          {/* Menu Management Tab */}
+          <MenuEditor />
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={5}>
           {/* Report Tab */}
           <Box display="flex" flexDirection="column" alignItems="center">
             <Report data={familyData} />

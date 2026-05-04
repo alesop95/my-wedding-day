@@ -101,7 +101,17 @@
       "website": "website"
     },
     "menu": {
-      "title": "Menu"
+      "title": "Menu",
+      "subtitle": "Discover the delights that await you at the reception",
+      "altImage": "menu",
+      "loadError": "Error loading menu",
+      "courses": {
+        "antipasto": "Appetizers",
+        "primo": "First Courses",
+        "secondo": "Main Courses",
+        "dolce": "Desserts",
+        "bevande": "Beverages"
+      }
     },
     "photoSharing": {
       "title": "Share your photos",

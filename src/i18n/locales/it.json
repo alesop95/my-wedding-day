@@ -101,7 +101,17 @@
       "website": "sito web"
     },
     "menu": {
-      "title": "Menù"
+      "title": "Menù",
+      "subtitle": "Scopri le delizie che ti aspettano al ricevimento",
+      "altImage": "menù",
+      "loadError": "Errore nel caricamento del menù",
+      "courses": {
+        "antipasto": "Antipasti",
+        "primo": "Primi Piatti",
+        "secondo": "Secondi Piatti",
+        "dolce": "Dolci",
+        "bevande": "Bevande"
+      }
     },
     "photoSharing": {
       "title": "Condividi le tue foto",
