@@ -72,7 +72,7 @@ const WhatsAppItem: React.FC<WhatsAppItemProps> = ({
         return;
       }
 
-      const url = `${URL}/${numberClean}?text=${encodeURI(message)}`;
+      const url = `${URL}/${numberClean}?text=${encodeURIComponent(message)}`;
       const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
 
       if (!newWindow) {
