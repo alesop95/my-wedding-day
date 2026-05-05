@@ -120,7 +120,10 @@ const WhatsAppItem: React.FC<WhatsAppItemProps> = ({
 export const WhatsAppWidget = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { contacts } = useContactsConfig();
+  const { contacts, loading, error } = useContactsConfig();
+
+  if (loading) return null; // Don't show anything while loading
+  if (error || contacts.length === 0) return null; // Don't show if error or no contacts
 
   return (
     <Stack direction={isMobile ? "column" : "row"} spacing={1}>

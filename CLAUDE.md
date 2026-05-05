@@ -716,6 +716,67 @@ type Props = {
 - Overlay opacity regolabile per ogni sezione secondo necessità UI
 - Sistema modulare: ogni sezione può avere pattern diverso o condiviso
 
+### ✅ Feature 9 — Refactoring Logica Bancaria (GiftSection) (COMPLETATA)
+
+**Status:** Implementata e testata ✅  
+**Data completamento:** 2026-05-05  
+**File implementati:**
+- `src/types/bank.ts` — Tipi `BankConfig` e `BankState`
+- `src/hooks/useBankConfig.ts` — Hook Firebase per configurazione bancaria
+- `src/hooks/__tests__/useBankConfig.test.ts` — Test unitario (4 test passanti)
+
+**File modificati:**
+- `src/sections/GiftSection.tsx` — Migrato da import constants a hook useBankConfig
+- `src/utils/constants.ts` — Rimosso oggetto `bank` hardcoded
+
+**Funzionalità:**
+- ✅ Dati bancari spostati da constants.ts hardcoded a Firestore collection `config/bank`
+- ✅ Hook `useBankConfig` con pattern coerente agli altri config hook (usePhotoSharing, usePlaylist)
+- ✅ Gestione errori con fp-ts pattern (loading, error, config states)
+- ✅ Logica visualizzazione mantenuta (IBAN sempre disponibile quando si clicca "LISTA NOZZE")
+- ✅ Test completi per tutti gli scenari (loading, success, not found, error)
+
+**Collection Firestore:**
+```javascript
+// Collection: config, Document: bank
+{
+  iban: "IT52W0306968873100000018352",
+  owner: "Alessio Sopranzi",
+  bicSwift: "BCITITMM"
+}
+```
+
+**Regole sicurezza Firestore (da aggiungere):**
+```javascript
+match /config/bank {
+  allow read: if true;
+  allow write: if false;  // Solo admin console Firebase
+}
+```
+
+**Architettura tecnica:**
+```typescript
+// Hook pattern coerente con altri config
+export const useBankConfig = (): BankState => {
+  const [state, setState] = useState<BankState>({
+    config: null, loading: true, error: null
+  });
+  // One-shot getDoc da config/bank
+  return state;
+};
+
+// Uso in GiftSection.tsx
+const { config: bankConfig } = useBankConfig();
+<BankDetail value={bankConfig?.iban || ""} />
+```
+
+**Benefici implementazione:**
+- Dati bancari configurabili senza redeploy
+- Pattern architetturale coerente con resto dell'app
+- Zero breaking changes nella UX (logica visualizzazione invariata)
+- Eliminata dipendenza hardcoded da constants.ts
+- Test coverage completo per robustezza
+
 ---
 
 ## Naming Conventions
@@ -744,7 +805,7 @@ type Props = {
 3. **AddFamily.tsx** — Duplicazione stato: `members` (useState) e `familyData` (useState separato) con `members` array condiviso. `key={`member_${idx}`}` basata su index. Mutazione implicita: `newMms[idx].firstName = target.value` muta l'oggetto originale dentro l'array copiato con spread (shallow copy).
 4. **FamilyRow.tsx** e **FamilyMembers.tsx** — `key: string` definito nel tipo props. `key` è una prop riservata React: viene consumata dal reconciler e mai passata al componente. Il campo è morto e crea confusione.
 5. **constants.ts** — `containerWidth = Math.min(window.innerWidth, 700)` calcolato a livello di modulo (top-level, eseguito una volta all'import). Se la finestra viene ridimensionata, il valore non si aggiorna. Tutti i componenti dipendenti (`AnimatedCharacter`, `Container`, `GiftSection` via `aroundTheWorldAnimationWidth`) usano una dimensione potenzialmente stale.
-6. **GiftSection.tsx** — Colori hardcoded (`#87f395aa`, `#14c4e1`), dati bancari in `constants.ts` anziché Firestore.
+6. **GiftSection.tsx** — Colori hardcoded (`#87f395aa`, `#14c4e1`), ~~dati bancari in `constants.ts` anziché Firestore~~ ✅ **Risolto** dalla Feature 9 (2026-05-05): dati bancari ora in Firestore `config/bank`.
 7. **WhatsAppWidget.tsx** — `window.open` senza `noopener`, zero gestione errori, contatti hardcoded, zero accessibilità (`Card` cliccabile senza `role="button"`).
 8. **Report.tsx** — Chiavi aggregazione disallineate ("Alessio"/"Beatrice" vs dati reali).
 9. **useAdmin.ts** — `useAdminData` ha `.catch(() => {})` vuoto: inghiotte silenziosamente errori Firestore. Il pannello admin non mostra feedback se il caricamento famiglie fallisce.
