@@ -154,6 +154,7 @@ const App = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { duration: 1, delay: 0.5 } }}
           >
+            <WeAreWedding />
             {bodySections.map((section, idx) => (
               <div
                 key={section.id}

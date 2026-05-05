@@ -133,19 +133,38 @@ export const SectionNavigator: React.FC = () => {
   const [activeSection, setActiveSection] = useAtom(activeSectionAtom);
   const [visibleSections] = useAtom(visibleSectionsAtom);
   const [totalSections] = useAtom(totalSectionsAtom);
+  const [isUserScrolling, setIsUserScrolling] = React.useState(false);
 
   const scrollToSection = useCallback((index: number) => {
     const sectionId = `section-${index}`;
     const element = document.getElementById(sectionId);
 
     if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
+      // Blocca l'IntersectionObserver temporaneamente
+      setIsUserScrolling(true);
+
+      // Per l'header (section-0), scroll al top della pagina
+      if (index === 0) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+
+      // Forza l'aggiornamento dello stato attivo
       setActiveSection(index);
+
+      // Riabilita l'IntersectionObserver dopo lo scroll
+      setTimeout(() => {
+        setIsUserScrolling(false);
+      }, 1000);
     }
-  }, [setActiveSection]);
+  }, [setActiveSection, setIsUserScrolling]);
 
   const navigateUp = useCallback(() => {
     const newIndex = activeSection === 0 ? totalSections - 1 : activeSection - 1;
@@ -160,21 +179,37 @@ export const SectionNavigator: React.FC = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
+        // Trova la sezione più visibile
+        let maxRatio = 0;
+        let targetSectionIndex = -1;
+
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const sectionIndex = parseInt(entry.target.id.replace('section-', ''));
-            if (!isNaN(sectionIndex) && sectionIndex !== activeSection) {
-              setActiveSection(sectionIndex);
-            }
+          if (entry.intersectionRatio > maxRatio) {
+            maxRatio = entry.intersectionRatio;
+            targetSectionIndex = parseInt(entry.target.id.replace('section-', ''));
           }
         });
+
+        // Aggiorna solo se abbiamo una sezione chiaramente più visibile e non stiamo navigando manualmente
+        if (!isUserScrolling && maxRatio > 0.3 && !isNaN(targetSectionIndex) && targetSectionIndex !== activeSection) {
+          setActiveSection(targetSectionIndex);
+        }
       },
       {
         root: null,
-        rootMargin: '-40% 0px -40% 0px',
-        threshold: 0
+        rootMargin: '-20% 0px -20% 0px',
+        threshold: [0, 0.1, 0.3, 0.5, 0.7, 1.0]
       }
     );
+
+    // Observer per gestire lo scroll al top (header)
+    const handleScroll = () => {
+      if (!isUserScrolling && window.scrollY < 100) {
+        setActiveSection(0);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
 
     visibleSections.forEach((_, index) => {
       const element = document.getElementById(`section-${index}`);
@@ -183,8 +218,11 @@ export const SectionNavigator: React.FC = () => {
       }
     });
 
-    return () => observer.disconnect();
-  }, [visibleSections, activeSection, setActiveSection]);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [visibleSections, activeSection, setActiveSection, isUserScrolling]);
 
   if (totalSections <= 1) return null;
 

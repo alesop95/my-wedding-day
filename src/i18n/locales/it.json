@@ -7,8 +7,13 @@
     "avatarBeatrice": "avatar Beatrice"
   },
   "sections": {
+    "weAreWedding": {
+      "title": "Chi siamo",
+      "subtitle": "La nostra storia"
+    },
     "athome": {
-      "title": "Prima della cerimonia",
+      "title": "Prima cerimonia",
+      "subtitle": "Incontriamoci",
       "church": "chiesa",
       "description": "Se hai piacere di incontrarci prima della cerimonia per bere una cosa insieme e scambiare 4 chiacchere, sei il benvenuto/a!",
       "timeFrom": "dalle 15:00 -",
@@ -16,7 +21,8 @@
       "meetingPointB": "Via Aurora, 57, 62012 Civitanova Alta MC"
     },
     "rsvp": {
-      "title": "La tua presenza",
+      "title": "Conferma presenza",
+      "subtitle": "Ci sarai?",
       "altImage": "rsvp",
       "description1": "E' molto utile sapere se festeggerai con noi.",
       "description2": "Per questo ti chiediamo di confermare la tua presenza entro e non oltre il",
@@ -35,6 +41,7 @@
     },
     "where": {
       "title": "Dove",
+      "subtitle": "Cerimonia e ricevimento",
       "ceremony": "Cerimonia",
       "reception": "Ricevimento",
       "church": "chiesa",
@@ -57,6 +64,7 @@
     },
     "gift": {
       "title": "Lista nozze",
+      "subtitle": "Il vostro regalo",
       "altImage": "regalo",
       "description1": "La vostra presenza sarà per noi il dono più bello e non chiediamo di più di ciò che abbiamo.",
       "description2": "Se si vuole si può contribuire per rendere indimenticabile la nostra luna di miele, amiamo viaggiare e conoscere nuovi luoghi e persone.",
@@ -92,7 +100,8 @@
       "placeholder2": "placeholder gallery 2"
     },
     "hotel": {
-      "title": "Alloggio",
+      "title": "Alloggi",
+      "subtitle": "Dove dormire",
       "altImage": "alloggio",
       "description1": "Se desiderate fermarvi qualche giorno in più, qui trovate una lista di strutture di esempio.",
       "description2": "Vi consigliamo di prenotare al più presto!",

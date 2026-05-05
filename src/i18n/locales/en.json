@@ -7,8 +7,13 @@
     "avatarBeatrice": "Beatrice avatar"
   },
   "sections": {
+    "weAreWedding": {
+      "title": "Who we are",
+      "subtitle": "Our story"
+    },
     "athome": {
-      "title": "Before the ceremony",
+      "title": "Before ceremony",
+      "subtitle": "Let's meet up",
       "church": "church",
       "description": "If you'd like to meet us before the ceremony to have a drink together and chat, you're welcome!",
       "timeFrom": "from 3:00 PM -",
@@ -16,7 +21,8 @@
       "meetingPointB": "Via Aurora, 57, 62012 Civitanova Alta MC"
     },
     "rsvp": {
-      "title": "Your presence",
+      "title": "RSVP",
+      "subtitle": "Will you be there?",
       "altImage": "rsvp",
       "description1": "It's very helpful to know if you'll celebrate with us.",
       "description2": "For this reason we ask you to confirm your presence by",
@@ -35,6 +41,7 @@
     },
     "where": {
       "title": "Where",
+      "subtitle": "Ceremony and reception",
       "ceremony": "Ceremony",
       "reception": "Reception",
       "church": "church",
@@ -57,6 +64,7 @@
     },
     "gift": {
       "title": "Wedding Gift List",
+      "subtitle": "Your gift",
       "altImage": "gift",
       "description1": "Your presence will be the most beautiful gift for us and we don't ask for more than what we have.",
       "description2": "If you wish, you can contribute to make our honeymoon unforgettable, we love traveling and discovering new places and people.",
@@ -93,6 +101,7 @@
     },
     "hotel": {
       "title": "Accommodation",
+      "subtitle": "Where to stay",
       "altImage": "accommodation",
       "description1": "If you'd like to stay a few more days, here's a list of example accommodations.",
       "description2": "We recommend booking as soon as possible!",
