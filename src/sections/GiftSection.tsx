@@ -84,7 +84,7 @@ export const GiftSection: React.FC = () => {
   const [showBankDetails, setShowBankDetails] = React.useState(false);
   const containerRef = React.useRef(null);
   const { aroundTheWorldAnimationWidth, containerWidth } = useResponsiveDimensions();
-  const { bankConfig } = useBankConfig();
+  const { config: bankConfig } = useBankConfig();
 
   const [isExploding, setIsExploding] = React.useState(false);
   const lottieRef = useRef<LottieRefCurrentProps | null>(null);

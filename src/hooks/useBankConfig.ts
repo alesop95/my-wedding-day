@@ -1,65 +1,46 @@
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../App";
+import { BankConfig, BankState } from "../types/bank";
 
-type BankConfig = {
-  iban: string;
-  owner: string;
-  bicSwift: string;
-};
-
-type UseBankConfigResult = {
-  bankConfig: BankConfig | null;
-  loading: boolean;
-  error: Error | null;
-};
-
-export const useBankConfig = (): UseBankConfigResult => {
-  const [bankConfig, setBankConfig] = useState<BankConfig | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+export const useBankConfig = (): BankState => {
+  const [state, setState] = useState<BankState>({
+    config: null,
+    loading: true,
+    error: null
+  });
 
   useEffect(() => {
     const fetchBankConfig = async () => {
       try {
-        setLoading(true);
         const docRef = doc(db, "config", "bank");
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
           const data = docSnap.data() as BankConfig;
-          setBankConfig(data);
+          setState({
+            config: data,
+            loading: false,
+            error: null
+          });
         } else {
-          // Fallback to constants if Firestore config doesn't exist
-          const { bank } = await import("../utils/constants");
-          setBankConfig({
-            iban: bank.iban,
-            owner: bank.owner,
-            bicSwift: bank.bicSwift
+          setState({
+            config: null,
+            loading: false,
+            error: "Bank configuration not found"
           });
         }
-      } catch (err) {
-        console.error("Error fetching bank config:", err);
-        setError(err as Error);
-
-        // Fallback to constants on error
-        try {
-          const { bank } = await import("../utils/constants");
-          setBankConfig({
-            iban: bank.iban,
-            owner: bank.owner,
-            bicSwift: bank.bicSwift
-          });
-        } catch (fallbackErr) {
-          console.error("Error loading fallback bank config:", fallbackErr);
-        }
-      } finally {
-        setLoading(false);
+      } catch (error) {
+        setState({
+          config: null,
+          loading: false,
+          error: error instanceof Error ? error.message : "Unknown error"
+        });
       }
     };
 
     fetchBankConfig();
   }, []);
 
-  return { bankConfig, loading, error };
+  return state;
 };

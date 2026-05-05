@@ -21,15 +21,7 @@ export const partyStartDate = new Date(2027, 6, 24, 19, 30);
 export const weddingEndDate = new Date(2027, 6, 25, 0, 30);
 
 export const confirmDaysBefore = 45;
-export const bank = {
-  iban: "IT52W0306968873100000018352",
-  owner: "Alessio Sopranzi",
-  bicSwift: "BCITITMM",
-  // number: ""
-  //bankName: "Intesa San Paolo",
-  //ABI: "03069",
-  // Il CIN corrisponde al quinto carattere dell'IBAN, mentre il CAB è composto dai 5 numeri successivi all'ABI 
-};
+
 export const tripDescription1 = `La vostra presenza sarà per noi il dono più bello e non chiediamo di più di ciò che abbiamo.`;
 export const tripDescription2 = `Se si vuole si può contribuire per rendere indimenticabile la nostra luna di miele, amiamo viaggiare e conoscere nuovi luoghi e persone.`;
 export const animationCharacterConfig = {
