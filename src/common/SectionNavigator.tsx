@@ -201,7 +201,16 @@ export const SectionNavigator: React.FC = () => {
         });
 
         // Aggiorna solo se abbiamo una sezione chiaramente più visibile e non stiamo navigando manualmente
-        if (!isUserScrolling && maxRatio > 0.3 && !isNaN(targetSectionIndex) && targetSectionIndex !== activeSection) {
+        // NON sovrascrivere l'header (index 0) se siamo vicini al top della pagina
+        const isNearTop = window.scrollY < 300;
+        const shouldUpdateToHeader = targetSectionIndex === 0;
+        const shouldPreventUpdateFromHeader = activeSection === 0 && isNearTop && !shouldUpdateToHeader;
+
+        if (!isUserScrolling &&
+            !shouldPreventUpdateFromHeader &&
+            maxRatio > 0.3 &&
+            !isNaN(targetSectionIndex) &&
+            targetSectionIndex !== activeSection) {
           setActiveSection(targetSectionIndex);
         }
       },
@@ -214,8 +223,8 @@ export const SectionNavigator: React.FC = () => {
 
     // Observer per gestire lo scroll al top (header)
     const handleScroll = () => {
-      if (!isUserScrolling && window.scrollY < 200) {
-        // Se siamo vicini al top, attiva l'header
+      if (!isUserScrolling && window.scrollY < 300) {
+        // Se siamo vicini al top, attiva l'header e mantienilo
         setActiveSection(0);
       }
     };
