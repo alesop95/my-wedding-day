@@ -144,7 +144,7 @@ export const GuestbookSection: React.FC = () => {
   const isOverLimit = remainingChars < 0;
 
   return (
-    <SectionContainer>
+    <SectionContainer backgroundSvg="/backgrounds/bg-guestbook.svg" overlayOpacity={0.6}>
       <Stack direction="column" alignItems="center" spacing={3}>
         <SectionHeader
           imgSrc="../sections/calendar.png"

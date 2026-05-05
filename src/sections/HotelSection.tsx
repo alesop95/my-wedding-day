@@ -70,7 +70,7 @@ export const HotelSection = () => {
   const { t } = useTranslation();
 
   return (
-    <SectionContainer>
+    <SectionContainer backgroundSvg="/backgrounds/bg-gallery.svg" overlayOpacity={0.5}>
       <Stack direction={"column"} alignItems={"center"} spacing={1}>
         <SectionHeader
           imgSrc={"../sections/resort.png"}

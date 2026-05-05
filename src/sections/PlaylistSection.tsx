@@ -189,7 +189,7 @@ export const PlaylistSection: React.FC = () => {
     note.length <= SONG_SUGGESTION_LIMITS.note;
 
   return (
-    <SectionContainer>
+    <SectionContainer backgroundSvg="/backgrounds/bg-menu.svg" overlayOpacity={0.5}>
       <Stack direction="column" alignItems="center" spacing={4}>
         <SectionHeader
           imgSrc="../sections/calendar.png"

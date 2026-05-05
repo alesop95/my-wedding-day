@@ -30,7 +30,7 @@ export const PhotoSharingSection: React.FC = () => {
   }
 
   return (
-    <SectionContainer>
+    <SectionContainer backgroundSvg="/backgrounds/bg-gift.svg" overlayOpacity={0.5}>
       <Stack direction="column" alignItems="center" spacing={4}>
         <SectionHeader
           imgSrc="../sections/calendar.png"

@@ -154,7 +154,7 @@ export const MenuSection: React.FC = () => {
     error,
     O.fold(
       () => (
-        <SectionContainer>
+        <SectionContainer backgroundSvg="/backgrounds/bg-menu.svg" overlayOpacity={0.6}>
           {loading ? (
             <LoadingMask />
           ) : (
@@ -199,7 +199,7 @@ export const MenuSection: React.FC = () => {
         </SectionContainer>
       ),
       (err) => (
-        <SectionContainer>
+        <SectionContainer backgroundSvg="/backgrounds/bg-menu.svg" overlayOpacity={0.6}>
           <Alert severity="error" sx={{ m: 2 }}>
             <Typography variant="h6">{t("sections.menu.loadError")}</Typography>
             <Typography variant="body2">{err.message}</Typography>

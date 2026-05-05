@@ -10,7 +10,7 @@ export const GallerySection: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <SectionContainer>
+    <SectionContainer backgroundSvg="/backgrounds/bg-ceremony.svg" overlayOpacity={0.5}>
       <Typography variant={"h4"} textAlign={"center"} pb={2}>
         {t("sections.gallery.subtitle")}
       </Typography>

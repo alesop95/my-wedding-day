@@ -31,7 +31,7 @@ export const WhereSection: React.FC<{ onlyInfo: boolean }> = ({ onlyInfo }) => {
     }
   ];
   return (
-    <SectionContainer>
+    <SectionContainer backgroundSvg="/backgrounds/bg-ceremony.svg" overlayOpacity={0.5}>
       <Box
         display={"flex"}
         style={{

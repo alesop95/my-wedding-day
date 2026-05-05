@@ -9,7 +9,7 @@ export const AtHome: React.FC<AtHomeProps> = () => {
   const { t } = useTranslation();
 
   return (
-    <SectionContainer>
+    <SectionContainer backgroundSvg="/backgrounds/bg-reception.svg" overlayOpacity={0.6}>
       <Box
         display={"flex"}
         style={{

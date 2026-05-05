@@ -590,8 +590,9 @@ match /songSuggestions/{id} {
 
 ### ✅ Feature 7 — Section Navigator (COMPLETATA)
 
-**Status:** Implementata e testata ✅  
-**Data completamento:** 2026-05-05  
+**Status:** Implementata, testata e bug-free ✅  
+**Data completamento:** 2026-05-05 
+**Bug fix finale:** 2026-05-05  
 **File implementati:**
 - `src/hooks/useSections.ts` — Hook per generare array dinamico di sezioni visibili
 - `src/state/activeSectionAtom.ts` — Refactor: rimossi staticSections/conditionalSections, mantenuti solo atomi
@@ -608,8 +609,10 @@ match /songSuggestions/{id} {
 - ✅ Design coerente con theme MUI (primary colors, shadows, hover effects)
 
 **Risoluzione bug:**
-- 🔧 **Bug "Chi siamo" → "Prima cerimonia"**: ora l'id delle sezioni è consistente tra navigator e DOM
-- 🔧 **Bug "Alessio & Beatrice" non scrolla**: ora il Header ha id="section-0" e scrolla al top correttamente
+- 🔧 **Bug disallineamento indici**: rimossa sezione "Who we are" ridondante dal navigator
+- 🔧 **Bug race condition**: implementato flag `isUserScrolling` per evitare conflitti tra click e IntersectionObserver  
+- 🔧 **Bug navigazione ciclica**: migliorata logica frecce su/giù con bounds protection
+- 🔧 **Bug header instabile**: implementata header protection logic per evidenziazione permanente
 - 🔧 **Logica ternaria complessa in App.tsx**: rimossa, sostituita con array dinamico e mappatura pulita
 
 **Architettura refactor:**
@@ -638,6 +641,80 @@ sections.map((section, idx) => (
 - Scroll smooth nativo browser (`behavior: 'smooth'`)
 - Visual feedback: bordo sinistro colorato per sezione attiva
 - Scale transform su hover e attivazione (1.02x hover, 1.05x active)
+
+**Algoritmi avanzati implementati:**
+- **Race condition protection**: flag `isUserScrolling` temporaneo (1.5s) disabilita observer durante navigazione manuale
+- **Header protection logic**: `scrollY < 300` + `shouldPreventUpdateFromHeader` mantiene "Alessio & Beatrice" stabile al top
+- **Bounds-safe navigation**: clamp di `activeSection` in `[0, totalSections-1]` per navigazione ciclica robusta
+- **Multi-threshold IntersectionObserver**: `[0, 0.1, 0.3, 0.5, 0.7, 1.0]` con `maxRatio > 0.3` per rilevamento sezione più visibile
+
+### ✅ Feature 8 — SVG Dynamic Backgrounds (COMPLETATA)
+
+**Status:** Implementata e testata ✅  
+**Data completamento:** 2026-05-05  
+**File implementati:**
+- `src/sections/SectionContainer.tsx` — Esteso con props `backgroundSvg` e `overlayOpacity`
+- `public/backgrounds/*.svg` — 8 pattern SVG eleganti generati da codice
+- Applicato a tutte le 11 sezioni che usano `SectionContainer`
+
+**Funzionalità:**
+- ✅ Sistema background SVG con pattern ripetuti e animazioni fade-in
+- ✅ Overlay bianco semitrasparente personalizzabile per leggibilità testo
+- ✅ Z-index layering corretto: background(0) → overlay(1) → contenuto(2)
+- ✅ Framer Motion `whileInView` animation per ingresso pattern
+- ✅ Pattern wedding-appropriate con colori eleganti (oro, champagne, beige)
+- ✅ Opacità pattern sottili (5-18%) + overlay bianco (50-70%) per equilibrio
+
+**Pattern SVG creati:**
+- `bg-reception.svg` — Punti dorati celebrativi per feste/regali
+- `bg-hotel.svg` — Diamanti argento/oro eleganti per sezioni professionali
+- `bg-gallery.svg` — Cornici tan con accenti dorati per gallerie/hotel
+- `bg-menu.svg` — Onde per menù/playlist musicali
+- `bg-ceremony.svg` — Pattern cerimonia per luoghi/gallerie
+- `bg-gift.svg` — Pattern regali per condivisioni
+- `bg-guestbook.svg` — Pattern messaggi per guestbook
+- `bg-rsvp.svg` — Pattern RSVP dedicato
+
+**Applicazione sezioni:**
+- **GiftSection** → `bg-reception.svg` (punti dorati, overlay 50%)
+- **RSVPSection** → `bg-hotel.svg` (diamanti eleganti, overlay 60%)
+- **HotelSection** → `bg-gallery.svg` (cornici con oro, overlay 50%)
+- **MenuSection** → `bg-menu.svg` (onde cibo, overlay 60%)
+- **AtHome** → `bg-reception.svg` (punti celebrativi, overlay 60%)
+- **WhereSection** → `bg-ceremony.svg` (pattern cerimonia, overlay 50%)
+- **PlaylistSection** → `bg-menu.svg` (onde musicali, overlay 50%)
+- **GallerySection** → `bg-ceremony.svg` (pattern cerimonia, overlay 50%)
+- **PhotoSharingSection** → `bg-gift.svg` (pattern regali, overlay 50%)
+- **GuestbookSection** → `bg-guestbook.svg` (pattern messaggi, overlay 60%)
+- **DashboardSection** → `bg-hotel.svg` (diamanti professionali, overlay 70%)
+
+**Architettura tecnica:**
+```typescript
+// Props estese per SectionContainer
+type Props = {
+  hideDivider?: boolean;
+  backgroundSvg?: string;      // path relativo da /public
+  overlayOpacity?: number;     // 0.0-1.0, default 0.7
+};
+
+// Implementazione con Framer Motion
+<motion.div
+  style={{
+    backgroundImage: `url(${backgroundSvg})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'repeat',
+    zIndex: 0
+  }}
+/>
+<Box sx={{ backgroundColor: `rgba(255, 255, 255, ${overlayOpacity})`, zIndex: 1 }} />
+<Paper sx={{ backgroundColor: 'transparent', zIndex: 2 }}>{children}</Paper>
+```
+
+**Estensibilità:**
+- Pattern generati da codice, facilmente sostituibili
+- Supporto per SVG esterni scaricati mantenendo stesso filename
+- Overlay opacity regolabile per ogni sezione secondo necessità UI
+- Sistema modulare: ogni sezione può avere pattern diverso o condiviso
 
 ---
 

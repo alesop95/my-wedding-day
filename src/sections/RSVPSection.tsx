@@ -169,7 +169,7 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ familyData }) => {
   limitDate.setDate(limitDate.getDate() - confirmDaysBefore);
   const update = useUpdateFamilyData(familyData.id);
   return (
-    <SectionContainer>
+    <SectionContainer backgroundSvg="/backgrounds/bg-hotel.svg" overlayOpacity={0.6}>
       <Stack direction={"column"} alignItems={"center"} spacing={1}>
         <SectionHeader
           imgSrc={"../sections/rsvp.png"}

@@ -101,7 +101,7 @@ export const GiftSection: React.FC = () => {
   }, [isExploding]);
 
   return (
-    <SectionContainer>
+    <SectionContainer backgroundSvg="/backgrounds/bg-reception.svg" overlayOpacity={0.5}>
       <Stack direction={"column"} alignItems={"center"} spacing={0}>
         <SectionHeader
           imgSrc={"../sections/car.png"}

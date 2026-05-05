@@ -235,7 +235,7 @@ export const DashboardSection: React.FC = () => {
 
   if (loading) {
     return (
-      <SectionContainer>
+      <SectionContainer backgroundSvg="/backgrounds/bg-hotel.svg" overlayOpacity={0.7}>
         <Box display="flex" justifyContent="center" py={6}>
           <CircularProgress />
         </Box>
@@ -245,7 +245,7 @@ export const DashboardSection: React.FC = () => {
 
   if (error) {
     return (
-      <SectionContainer>
+      <SectionContainer backgroundSvg="/backgrounds/bg-hotel.svg" overlayOpacity={0.7}>
         <Alert severity="error">
           {t("sections.dashboard.loadError")}: {error.message}
         </Alert>
@@ -255,7 +255,7 @@ export const DashboardSection: React.FC = () => {
 
   if (!hasData || !data) {
     return (
-      <SectionContainer>
+      <SectionContainer backgroundSvg="/backgrounds/bg-hotel.svg" overlayOpacity={0.7}>
         <Alert severity="info">
           {t("sections.dashboard.noData")}
         </Alert>
@@ -267,7 +267,7 @@ export const DashboardSection: React.FC = () => {
   const barData = sideToBarChartData(data.sideSummary);
 
   return (
-    <SectionContainer>
+    <SectionContainer backgroundSvg="/backgrounds/bg-hotel.svg" overlayOpacity={0.7}>
       <Stack direction="column" alignItems="center" spacing={4}>
         <SectionHeader
           imgSrc="../sections/calendar.png"
