@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./App.css";
 import Container from "./container";
 import Header from "./header";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { bootAnimationAtom } from "./state/bootAnimationAtom";
 import { motion } from "framer-motion";
 import WeAreWedding from "./sections/WeAreWedding";
@@ -20,7 +20,6 @@ import { Admin } from "./admin/Admin";
 import { RSVPSection } from "./sections/RSVPSection";
 import { isDev } from "./utils/env";
 import { useNeedToRefresh } from "./hooks/useNeedToRefresh";
-import { useWedding } from "./hooks/useWedding";
 import { useRestaurant } from "./hooks/useRestaurant";
 import { Restaurant } from "./restaurant";
 import { AtHome } from "./sections/AtHome";
@@ -29,10 +28,11 @@ import { GuestbookSection } from "./sections/GuestbookSection";
 import { PhotoSharingSection } from "./sections/PhotoSharingSection";
 import { PlaylistSection } from "./sections/PlaylistSection";
 import { MenuSection } from "./sections/MenuSection";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+import { SectionNavigator } from "./common/SectionNavigator";
+import { useSections } from "./hooks/useSections";
+import { visibleSectionsAtom } from "./state/activeSectionAtom";
+import { useWedding } from "./hooks/useWedding";
+import { FamilyData } from "./types/family";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAjVNYUCvAPUbSyf6gjnDObiJQT9arEYFw",
@@ -43,15 +43,30 @@ const firebaseConfig = {
   appId: "1:638204567637:web:d750670c56ac9030da74dc"
 };
 
-// Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
 export const db = getFirestore(firebaseApp);
 
+const renderSectionContent = (id: string, familyData: FamilyData): React.ReactNode => {
+  switch (id) {
+    case 'we-are-wedding': return <WeAreWedding />;
+    case 'at-home': return <AtHome />;
+    case 'where': return <WhereSection onlyInfo={familyData.onlyInfo} />;
+    case 'menu': return <MenuSection />;
+    case 'rsvp': return <RSVPSection familyData={familyData} />;
+    case 'hotel': return <HotelSection />;
+    case 'gift': return <GiftSection />;
+    case 'guestbook': return <GuestbookSection />;
+    case 'playlist': return <PlaylistSection />;
+    case 'photo-sharing': return <PhotoSharingSection />;
+    case 'gallery': return <GallerySection />;
+    default: return null;
+  }
+};
+
 const App = () => {
-  const [headerAnimationEnd, setHeaderAnimationEnd] =
-    useAtom(bootAnimationAtom);
+  const [headerAnimationEnd, setHeaderAnimationEnd] = useAtom(bootAnimationAtom);
   const result = useFamilyData();
-  const { isWeddingOver, showAtHome, showRSVP, showHotel, showGuestbook } = useWedding();
+  const { isWeddingOver } = useWedding();
   const [elapsed, setElapsed] = React.useState(false);
 
   const needToRefresh = useNeedToRefresh();
@@ -74,7 +89,6 @@ const App = () => {
   const admin = useAdmin();
   const restaurant = useRestaurant();
 
-  // Gestione transizione diretta Admin ↔ Restaurant
   const [adminMode, setAdminMode] = React.useState<'admin' | 'restaurant' | null>(null);
 
   React.useEffect(() => {
@@ -90,6 +104,14 @@ const App = () => {
       setAdminMode('restaurant');
     }
   }, [admin, restaurant]);
+
+  const onlyInfo = result?.kind === "success" ? result.data.onlyInfo : false;
+  const sections = useSections({ onlyInfo });
+  const setVisibleSections = useSetAtom(visibleSectionsAtom);
+
+  useEffect(() => {
+    setVisibleSections(sections);
+  }, [sections, setVisibleSections]);
 
   if (adminMode === 'admin' || (admin && !adminMode)) {
     return <Admin />;
@@ -115,34 +137,36 @@ const App = () => {
     return <ErrorMask />;
   }
 
+  const familyData = result.data;
+  const headerSection = sections[0];
+  const bodySections = sections.slice(1);
+
   return (
-    <Container>
-      <Header onAnimationComplete={() => setHeaderAnimationEnd(true)} />
-      {headerAnimationEnd && (
-        <motion.div
-          style={{ width: "100%" }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 1, delay: 0.5 } }}
-        >
-          <WeAreWedding />
-          {showAtHome && <AtHome />}
-          {/* <WhenSection /> */}
-          <WhereSection onlyInfo={result.data.onlyInfo} />
-          <MenuSection />
-          {!result.data.onlyInfo && (
-            <>
-              {showRSVP && <RSVPSection familyData={result.data} />}
-              {showHotel && <HotelSection />}
-            </>
-          )}
-          <GiftSection />
-          {showGuestbook && <GuestbookSection />}
-          <PlaylistSection />
-          <PhotoSharingSection />
-          <GallerySection />
-        </motion.div>
-      )}
-    </Container>
+    <>
+      <SectionNavigator />
+      <Container>
+        <div id={`section-0`} data-section-id={headerSection?.id}>
+          <Header onAnimationComplete={() => setHeaderAnimationEnd(true)} />
+        </div>
+        {headerAnimationEnd && (
+          <motion.div
+            style={{ width: "100%" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 1, delay: 0.5 } }}
+          >
+            {bodySections.map((section, idx) => (
+              <div
+                key={section.id}
+                id={`section-${idx + 1}`}
+                data-section-id={section.id}
+              >
+                {renderSectionContent(section.id, familyData)}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </Container>
+    </>
   );
 };
 

@@ -588,6 +588,57 @@ match /songSuggestions/{id} {
 - Time-ago i18n riutilizzato da Guestbook (pattern `timeAgo.*`)
 - Moderazione admin via dialog di conferma con anteprima del suggerimento
 
+### ✅ Feature 7 — Section Navigator (COMPLETATA)
+
+**Status:** Implementata e testata ✅  
+**Data completamento:** 2026-05-05  
+**File implementati:**
+- `src/hooks/useSections.ts` — Hook per generare array dinamico di sezioni visibili
+- `src/state/activeSectionAtom.ts` — Refactor: rimossi staticSections/conditionalSections, mantenuti solo atomi
+- `src/common/SectionNavigator.tsx` — Componente di navigazione laterale con preview sezioni
+- `src/App.tsx` — Refactor completo: array dinamico di sezioni con id consistenti
+
+**Funzionalità:**
+- ✅ Barra laterale fissa con miniature delle sezioni (icona, nome, descrizione)
+- ✅ Preview responsive: mobile (solo icone + tooltip) vs desktop (icone + testo)
+- ✅ Frecce su/giù per navigazione ciclica tra sezioni
+- ✅ Click diretto su preview per saltare alla sezione
+- ✅ IntersectionObserver automatico per sync con scroll utente
+- ✅ Animazioni Framer Motion per ingresso/uscita preview
+- ✅ Design coerente con theme MUI (primary colors, shadows, hover effects)
+
+**Risoluzione bug:**
+- 🔧 **Bug "Chi siamo" → "Prima cerimonia"**: ora l'id delle sezioni è consistente tra navigator e DOM
+- 🔧 **Bug "Alessio & Beatrice" non scrolla**: ora il Header ha id="section-0" e scrolla al top correttamente
+- 🔧 **Logica ternaria complessa in App.tsx**: rimossa, sostituita con array dinamico e mappatura pulita
+
+**Architettura refactor:**
+- **Single Source of Truth**: `useSections({ onlyInfo })` genera l'array di sezioni in base ai flag temporali
+- **Separazione responsabilità**: App.tsx popola `visibleSectionsAtom`, SectionNavigator legge l'atom
+- **Id consistenti**: `sections[i]` → `id="section-${i}"` → navigator click → `scrollToSection(i)` → stesso elemento
+- **Mappatura componenti**: `renderSectionContent(id)` switch per ogni tipo di sezione
+
+**Pattern tecnico:**
+```tsx
+const sections = useSections({ onlyInfo }); // [{ id: 'header', ... }, { id: 'we-are-wedding', ... }, ...]
+sections.map((section, idx) => (
+  <div key={section.id} id={`section-${idx}`}>
+    {renderSectionContent(section.id, familyData)}
+  </div>
+))
+```
+
+**Configurazione IntersectionObserver:**
+- rootMargin: `-40% 0px -40% 0px` (attivazione nella zona centrale 60%)
+- threshold: `0` (trigger su entrata/uscita)
+- Cleanup automatico su unmount
+
+**UX:**
+- Nascosto automaticamente se ≤1 sezione totale
+- Scroll smooth nativo browser (`behavior: 'smooth'`)
+- Visual feedback: bordo sinistro colorato per sezione attiva
+- Scale transform su hover e attivazione (1.02x hover, 1.05x active)
+
 ---
 
 ## Naming Conventions
