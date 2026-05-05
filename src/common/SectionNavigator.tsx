@@ -149,6 +149,12 @@ export const SectionNavigator: React.FC = () => {
           top: 0,
           behavior: 'smooth'
         });
+        // Forza l'aggiornamento per l'header dopo un delay
+        setTimeout(() => {
+          if (!isUserScrolling) {
+            setActiveSection(0);
+          }
+        }, 500);
       } else {
         element.scrollIntoView({
           behavior: 'smooth',
@@ -162,17 +168,21 @@ export const SectionNavigator: React.FC = () => {
       // Riabilita l'IntersectionObserver dopo lo scroll
       setTimeout(() => {
         setIsUserScrolling(false);
-      }, 1000);
+      }, 1500);
     }
   }, [setActiveSection, setIsUserScrolling]);
 
   const navigateUp = useCallback(() => {
-    const newIndex = activeSection === 0 ? totalSections - 1 : activeSection - 1;
+    // Assicura che l'indice sia nei bounds corretti
+    const currentIndex = Math.max(0, Math.min(activeSection, totalSections - 1));
+    const newIndex = currentIndex === 0 ? totalSections - 1 : currentIndex - 1;
     scrollToSection(newIndex);
   }, [activeSection, totalSections, scrollToSection]);
 
   const navigateDown = useCallback(() => {
-    const newIndex = (activeSection + 1) % totalSections;
+    // Assicura che l'indice sia nei bounds corretti
+    const currentIndex = Math.max(0, Math.min(activeSection, totalSections - 1));
+    const newIndex = currentIndex === totalSections - 1 ? 0 : currentIndex + 1;
     scrollToSection(newIndex);
   }, [activeSection, totalSections, scrollToSection]);
 
@@ -204,7 +214,8 @@ export const SectionNavigator: React.FC = () => {
 
     // Observer per gestire lo scroll al top (header)
     const handleScroll = () => {
-      if (!isUserScrolling && window.scrollY < 100) {
+      if (!isUserScrolling && window.scrollY < 200) {
+        // Se siamo vicini al top, attiva l'header
         setActiveSection(0);
       }
     };
