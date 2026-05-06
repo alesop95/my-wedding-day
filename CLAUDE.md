@@ -777,6 +777,60 @@ const { config: bankConfig } = useBankConfig();
 - Eliminata dipendenza hardcoded da constants.ts
 - Test coverage completo per robustezza
 
+### ✅ Feature 10 — Fix Sicurezza e Errori WhatsAppWidget (COMPLETATA)
+
+**Status:** Completata come miglioramento dell'implementazione Firestore esistente ✅  
+**Data completamento:** 2026-05-05  
+**File implementati:**
+- `src/types/contacts.ts` — Tipi `ContactConfig` e `ContactsState`
+- `src/hooks/__tests__/useContactsConfig.test.ts` — Test hook (5 test passanti)
+
+**File migliorati:**
+- `src/hooks/useContactsConfig.ts` — Allineato al pattern degli altri config hook
+- `src/common/WhatsAppWidget.tsx` — Gestione loading/error states + fix encoding
+
+**Situazione trovata:**
+- ✅ Fix sicurezza `window.open(url, '_blank', 'noopener,noreferrer')` già implementati
+- ✅ Gestione errori e accessibilità già implementati
+- ❌ Hook useContactsConfig con pattern inconsistente
+
+**Miglioramenti applicati:**
+- ✅ **Pattern coerente:** ContactsState con contacts/loading/error come useBankConfig
+- ✅ **Bug fix encoding:** `encodeURI()` → `encodeURIComponent()` per caratteri speciali
+- ✅ **Test coverage:** 5 test per scenari completi (loading, success, not found, error, empty)
+- ✅ **UI loading states:** Gestione loading/error nel widget con fallback graceful
+
+**Collection Firestore:**
+```javascript
+// Collection: config, Document: contacts  
+{
+  "whatsAppContacts": [
+    {
+      "name": "Beatrice",
+      "number": "+393331983242",
+      "message": "Ciao! Ti contatto per il matrimonio di Alessio e Beatrice",
+      "image": "./header/beatrice.svg"
+    },
+    {
+      "name": "Alessio",
+      "number": "+393201950043",
+      "message": "Ciao! Ti contatto per il matrimonio di Alessio e Beatrice", 
+      "image": "./header/alessio.svg"
+    }
+  ]
+}
+```
+
+**Bug risolto:**
+- 🔧 **Messaggio WhatsApp troncato**: Fix encoding + semplificazione messaggio (no emoji, "e" invece di "&")
+- 🔧 **Pattern hook inconsistente**: Allineato con altri config hook per manutenibilità
+
+**Sicurezza e accessibilità confermate:**
+- ✅ `window.open` con `noopener,noreferrer`
+- ✅ Validazione numero E.164 con regex
+- ✅ Accessibilità completa (`role="button"`, `tabIndex`, `onKeyDown`, `aria-label`)
+- ✅ Gestione errori try-catch con logging appropriato
+
 ---
 
 ## Naming Conventions

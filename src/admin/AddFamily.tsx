@@ -77,7 +77,7 @@ export const AddFamily: React.FC<AddFamilyProps> = ({
           label="solo info"
         />
         {familyData.members.map((member, idx) => {
-          const memberKey = `${member.firstName}_${member.lastName}_${member.sex}_${idx}`;
+          const memberKey = `${member.firstName}_${member.lastName}_${member.sex}`;
           return (
             <Stack direction={"row"} spacing={1} key={memberKey}>
               <IconButton

@@ -23,7 +23,7 @@ export const FamilyMembers: React.FC<FamilyRowsProps> = ({ data }) => {
       {members.map((member, idx) => {
         const { firstName, lastName, rsvp, isChild, infant } = member;
         return (
-          <TableRow key={`${id}_${idx}`}>
+          <TableRow key={`${id}_${firstName}_${lastName}`}>
             <TableCell align={"center"}>{firstName}</TableCell>
             <TableCell align={"center"}>{lastName}</TableCell>
             <TableCell align={"center"}>
