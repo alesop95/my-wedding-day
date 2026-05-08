@@ -831,6 +831,37 @@ const { config: bankConfig } = useBankConfig();
 - ✅ Accessibilità completa (`role="button"`, `tabIndex`, `onKeyDown`, `aria-label`)
 - ✅ Gestione errori try-catch con logging appropriato
 
+### ✅ Feature 11 — Fix Criticità AddFamily.tsx (COMPLETATA)
+
+**Status:** Completata come miglioramento architetturale ✅  
+**Data completamento:** 2026-05-06  
+**File modificati:**
+- `src/admin/FamilyMembers.tsx` — Key `${id}_${idx}` → `${id}_${firstName}_${lastName}`
+- `src/admin/AddFamily.tsx` — Key rimossa dipendenza da `idx` per stabilità
+
+**Problemi trovati e risolti:**
+- ❌ **Key instabili**: Key basate su index in 2 componenti admin
+- ✅ **Mutazione implicita**: GIÀ risolta con `immer` 
+- ✅ **Duplicazione stato**: GIÀ risolta (single source: `familyData`)
+
+**Miglioramenti applicati:**
+- ✅ **Key completamente stabili**: `firstName_lastName_sex` senza dipendenza da posizione array
+- ✅ **React reconciliation ottimale**: Add/remove membri senza side-effects visivi
+- ✅ **Consistenza architetturale**: Pattern uniforme in componenti admin
+- ✅ **Zero breaking changes**: Fix minimali e sicuri su componenti critici
+
+**Architettura finale:**
+```typescript
+// FamilyMembers.tsx - Key basate sui dati
+<TableRow key={`${id}_${firstName}_${lastName}`}>
+
+// AddFamily.tsx - Key stabili senza index
+const memberKey = `${member.firstName}_${member.lastName}_${member.sex}`;
+```
+
+**Note implementazione:**
+La maggior parte dei problemi gravi del backlog (mutazione implicita, duplicazione stato) erano già stati risolti in precedenti refactor. I fix applicati completano l'ottimizzazione delle key React per una perfetta riconciliazione dei componenti dinamici nell'admin panel.
+
 ---
 
 ## Naming Conventions

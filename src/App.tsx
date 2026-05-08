@@ -34,16 +34,33 @@ import { visibleSectionsAtom } from "./state/activeSectionAtom";
 import { useWedding } from "./hooks/useWedding";
 import { FamilyData } from "./types/family";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAjVNYUCvAPUbSyf6gjnDObiJQT9arEYFw",
-  authDomain: "my-wedding-day-dev.firebaseapp.com",
-  projectId: "my-wedding-day-dev",
-  storageBucket: "my-wedding-day-dev.firebasestorage.app",
-  messagingSenderId: "638204567637",
-  appId: "1:638204567637:web:d750670c56ac9030da74dc"
+// Firebase configuration selector
+const getFirebaseConfig = () => {
+  const environment = process.env.REACT_APP_ENVIRONMENT || 'test';
+
+  if (environment === 'prod') {
+    return {
+      apiKey: process.env.REACT_APP_FIREBASE_API_KEY_PROD,
+      authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN_PROD,
+      projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID_PROD,
+      storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET_PROD,
+      messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID_PROD,
+      appId: process.env.REACT_APP_FIREBASE_APP_ID_PROD
+    };
+  } else {
+    // Default to TEST environment
+    return {
+      apiKey: process.env.REACT_APP_FIREBASE_API_KEY_TEST,
+      authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN_TEST,
+      projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID_TEST,
+      storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET_TEST,
+      messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID_TEST,
+      appId: process.env.REACT_APP_FIREBASE_APP_ID_TEST
+    };
+  }
 };
 
-export const firebaseApp = initializeApp(firebaseConfig);
+export const firebaseApp = initializeApp(getFirebaseConfig());
 export const db = getFirestore(firebaseApp);
 
 const renderSectionContent = (id: string, familyData: FamilyData): React.ReactNode => {
